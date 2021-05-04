@@ -1,49 +1,12 @@
 import React from "react";
-import AwesomeSlider from "react-awesome-slider";
-import withAutoplay from "react-awesome-slider/dist/autoplay";
-import "react-awesome-slider/dist/styles.css";
-import "react-awesome-slider/dist/custom-animations/cube-animation.css";
 import styled from "styled-components";
 import { Layout } from "antd";
 
-import carouselImageOne from "../../res/landing_page_background.jpg";
-import carouselImageTwo from "../../res/buddha.jpg";
-
 const { Content } = Layout;
 
-const headerHeight = 64;
-const StyledSliderContainer = styled.div`
-  width: 100vw;
-  height: calc(100vh - ${headerHeight}px);
-`;
-
-const AutoplaySlider = withAutoplay(AwesomeSlider);
-
 const Home = () => {
-  const autoplayImageCarousel = true;
-  const imageCarouselInterval = 3000; // in ms.
-  const areBulletsVisible = false;
-  const isParentFilled = true;
-
   return (
     <Content>
-      <StyledSliderContainer>
-        <AutoplaySlider
-          play={autoplayImageCarousel}
-          cancelOnInteraction={false}
-          interval={imageCarouselInterval}
-          animation="cubeAnimation"
-          bullets={areBulletsVisible}
-          fillParent={isParentFilled}
-        >
-          <div data-src={carouselImageOne} />
-          <div data-src={carouselImageTwo} />
-        </AutoplaySlider>
-      </StyledSliderContainer>
-
-      <br />
-      <br />
-
       <div>
         Phasellus consectetur ut velit vel condimentum. Nullam varius odio nec ornare molestie.
         Vivamus massa ipsum, eleifend eu ipsum eget, lacinia maximus erat. Proin sodales auctor
