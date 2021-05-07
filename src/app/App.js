@@ -1,9 +1,10 @@
 import React from "react";
 import { Layout } from "antd";
 import Loader from "react-loader-spinner";
-import SplitPane from "react-split-pane";
 import styled from "styled-components";
 import "antd/dist/antd.css";
+
+import LandingPage from "../components/landingPage/LandingPage";
 
 const { Header, Content, Footer } = Layout;
 
@@ -36,26 +37,7 @@ const StyledFooter = styled(Footer)`
   padding: 10px 50px;
 `;
 
-const StyledVerticalSplitPane = styled(SplitPane)`
-  position: inherit !important;
-`;
-const StyledHorizontalSplitPane = styled(SplitPane)``;
-
 const isLoading = false;
-const calculateWidth = (size) => `${(size / window.innerWidth) * 100}%`;
-const landingPage = (
-  <StyledVerticalSplitPane
-    split="vertical"
-    defaultSize={localStorage.getItem("splitVerticalPosition") || "30%"}
-    onChange={(size) => localStorage.setItem("splitVerticalPosition", calculateWidth(size))}
-  >
-    <div>Pane Component 1</div>
-    <StyledHorizontalSplitPane split="horizontal" defaultSize="35%">
-      <div>Pane Component 2</div>
-      <div>Pane Component 3</div>
-    </StyledHorizontalSplitPane>
-  </StyledVerticalSplitPane>
-);
 
 const loaderContainer = (
   <StyledLoaderContainer>
@@ -67,7 +49,7 @@ const App = () => {
   return (
     <StyledLayout>
       <StyledHeader />
-      <StyledContent>{isLoading ? loaderContainer : landingPage}</StyledContent>
+      <StyledContent>{isLoading ? loaderContainer : <LandingPage />}</StyledContent>
       <StyledFooter>Coinarius ©2020 Created by Steven Kingaby</StyledFooter>
     </StyledLayout>
   );
