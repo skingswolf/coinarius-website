@@ -1,0 +1,31 @@
+/* 
+$stamp__width: 111px !default;
+$stamp__height: 120px !default; 
+$panel__background-color: 
+$stamp__border:
+$text-color-1:
+$text-color-2:
+$text-color-3:
+$text-color-4:
+$stamp__title__top:
+$stamp__title__font-size:
+$stamp-value-font-size:
+$positive-color-1:
+$negative-color-1:
+$stamp-small-font-size:
+$stamp__whisker__top:
+$stamp__whisker__left:
+$stamp__whisker__border-width:
+$stamp__whisker__border-color:
+$stamp-small-font-size:
+$stamp__whisker__color:
+$stamp__line__border:
+$stamp__rect__background:
+$stamp__chart__block__background-color:
+$stamp-small-font-size:
+$stamp__footer__color:
+$stamp__border-hover:
+$positive-background:
+$panel__background-color:
+$border-9:
+*/

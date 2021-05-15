@@ -1,0 +1,335 @@
+/* 111px: 111px !default;
+120px: 120px !default; 
+
+*/
+
+.stamp {
+  position: relative;
+  width: 111px;
+  height: 120px;
+  background: $panel__background-color;
+  border: $stamp__border;
+  border-radius: 4px;
+}
+
+.stamp svg {
+  position: absolute;
+  top: 0;
+  left: 5px;
+}
+
+.stamp .body {
+  background: $stamp__background-color;
+  position: absolute;
+  top: 20px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  color: $text-color-1;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.stamp .body .no-data {
+  margin: 0;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.stamp .has-significant-colour {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  top: 20px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.stamp .has-border-colour {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  top: 20px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+}
+
+.stamp .has-significant-colour.has-border-colour {
+  top: 20px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.stamp .title {
+  position: absolute;
+  width: 100%;
+  top: $stamp__title__top;
+  font-size: $stamp__title__font-size;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 20px;
+  text-align: center;
+  color: $text-color-3;
+}
+
+.stamp .title .truncate {
+  display: flex;
+  width: 100%;
+  padding: 0 5px;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.stamp .title .truncate div {
+  overflow: hidden;
+  min-width: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stamp .title .truncate span {
+  padding-left: 2px;
+}
+
+.stamp .value {
+  position: absolute;
+  width: 100%;
+  top: 4px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $stamp-value-font-size;
+  line-height: 20px;
+  text-align: center;
+}
+
+.stamp .positive {
+  color: $positive-color-1;
+}
+
+.stamp .negative {
+  color: $negative-color-1;
+}
+
+.stamp .sub-title {
+  position: absolute;
+  width: 100%;
+  top: 22px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $stamp-small-font-size;
+  line-height: 12px;
+  text-align: center;
+  color: $text-color-2;
+}
+
+.stamp .whisker-up,
+.stamp .whisker-up-positive,
+.stamp .whisker-up-negative,
+.stamp .whisker-up-normal,
+.stamp .whisker-down-positive,
+.stamp .whisker-down-negative,
+.stamp .whisker-down-normal,
+.stamp .whisker-down {
+  position: relative;
+  top: $stamp__whisker__top;
+  left: $stamp__whisker__left;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: $stamp__whisker__border-width;
+  border-color: transparent transparent $stamp__whisker__border-color transparent;
+  box-shadow: 0 4px 4px rgba($text-color-4, 0.1);
+}
+
+.stamp .whisker-up-positive {
+  border-color: transparent transparent $positive-color-1 transparent;
+}
+
+.stamp .whisker-up-negative {
+  border-color: transparent transparent $negative-color-1 transparent;
+}
+
+.stamp .whisker-down-positive {
+  border-color: $positive-color-1 transparent transparent transparent;
+  border-width: 6px 5px 0 5px;
+  top: 9px;
+}
+
+.stamp .whisker-down-negative {
+  border-color: $negative-color-1 transparent transparent transparent;
+  border-width: 6px 5px 0 5px;
+  top: 9px;
+}
+
+.stamp .whisker-down-normal {
+  border-color: $text-color-2 transparent transparent transparent;
+  border-width: 6px 5px 0 5px;
+  top: 9px;
+}
+
+.stamp .whisker-down {
+  top: 10px;
+  border-width: 7px 5px 0 5px;
+  border-color: $text-color-1 transparent transparent transparent !important;
+}
+
+.stamp .bar {
+  position: absolute;
+  top: 57px;
+  width: 100%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $stamp-small-font-size;
+  color: $stamp__whisker__color;
+}
+
+.stamp .bar .line {
+  position: absolute;
+  left: 15.45%;
+  right: 15.45%;
+  top: calc(50% - 12px / 2 + 21px);
+  bottom: 35%;
+  border: $stamp__line__border;
+}
+
+.stamp .bar .rect {
+  position: absolute;
+  width: 36px;
+  height: 8px;
+  left: 33%;
+  right: 26.36%;
+  top: calc(50% - 12px / 2 + 18px);
+  bottom: 33.33%;
+  background: $stamp__rect__background;
+}
+
+.stamp .bar .high {
+  position: absolute;
+  height: 12px;
+  left: 88.18%;
+  top: calc(50% - 12px / 2 + 16px);
+  line-height: 12px;
+}
+
+.stamp .bar .low {
+  position: absolute;
+  height: 12px;
+  left: 4.55%;
+  top: calc(50% - 12px / 2 + 16px);
+  line-height: 12px;
+}
+
+.stamp .bar .whisker {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 7px 5px 0 5px;
+  border-color: $text-color-1 transparent transparent transparent;
+  left: calc(50% - 10px / 2 - 19px);
+  top: calc(50% - 7px / 2 + 10.5px);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stamp .bar .whisker-red {
+  border-color: $negative-color-1 transparent transparent transparent;
+}
+
+.stamp .bar .whisker-green {
+  border-color: $positive-color-1 transparent transparent transparent;
+}
+
+.stamp .rect {
+  position: absolute;
+  padding: 0 5px;
+  top: 38px;
+  width: 100%;
+  height: 60px;
+  display: flex;
+}
+
+.stamp .rect div {
+  flex-direction: column;
+  width: 33px;
+  margin-right: 1px;
+  height: 100%;
+}
+
+.stamp .rect div .block {
+  height: 47px;
+  background: $stamp__chart__block__background-color;
+}
+
+.stamp .rect div .block div {
+  text-align: center;
+  width: 33px;
+  height: 12px;
+  font-size: $stamp-small-font-size;
+}
+
+.stamp .footer {
+  position: absolute;
+  top: 84px;
+  width: 100%;
+  font-style: normal;
+  font-weight: normal;
+  font-size: $stamp-small-font-size;
+  line-height: 12px;
+  text-align: center;
+  color: $stamp__footer__color;
+}
+
+.stamp &:hover {
+  border: $stamp__border-hover;
+}
+
+.stamp-flagging-red {
+  background: $negative-background;
+  border-color: transparent;
+}
+
+.stamp-flagging-green {
+  background: $positive-background;
+  border-color: transparent;
+}
+
+.stamp-flagging-green .lighter {
+  color: $text-color-1 !important;
+}
+.stamp-flagging-green .darker {
+  color: $text-color-2 !important;
+}
+
+.stamp.border-colour-green {
+  background: $panel__background-color;
+  border: $border-8;
+  border-width: 2px;
+}
+
+.stamp.border-colour-red {
+  background: $panel__background-color;
+  border: $border-9;
+  border-width: 2px;
+}
+
+@import "./CDS/CDS";
+@import "./Divergence/Divergence";
+@import "./ESG/ESG";
+@import "./ImpliedVol/ImpliedVol";
+@import "./Insiders/Insiders";
+@import "./Performance/Performance";
+@import "./PriorityHome/PriorityHome";
+@import "./ShortInterest/ShortInterest";
+@import "./Signals/Signals";
+@import "./Valuation/Valuation";
+@import "./Volume/Volume";
+@import "./StockHome/StockHome";
+@import "./Jobs/Jobs";
+@import "./PressRelease/PressRelease";
+@import "./StockEvents/StockEvents";
+@import "./WatchlistEvents/WatchlistEvents";
+@import "./Dividend/Dividend";
+@import "./EPSMomentum/EPSMomentum";
