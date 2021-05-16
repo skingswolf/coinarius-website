@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
-import { series } from "../../stamps/sample-data";
+import VolumeStamp from "../../stamps/volume/VolumeStamp";
+import { series, volume } from "../../stamps/sample-data";
 
 const Body = styled.div`
   width: 100%;
@@ -33,7 +34,7 @@ const Row = ({ security }) => {
       <Stamps>
         <PerformanceStamp value={5.96} data={series} />
         <PerformanceStamp value={-1.04} data={series} />
-        <PerformanceStamp value={3} data={series} />
+        <VolumeStamp value={3} data={volume} />
         <PerformanceStamp value={1.3} data={series} />
         <PerformanceStamp value={-4} data={series} />
         <PerformanceStamp value={2.69} data={series} />
