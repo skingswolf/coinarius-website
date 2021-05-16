@@ -1,15 +1,20 @@
 import React from "react";
+import styled from "styled-components";
 
-import PerformanceStamp from "../stamps/performance/PerformanceStamp";
-import { series } from "../stamps/sample-data";
+import Row from "./row/Row";
+
+const securities = ["Bitcoin", "Ethereum", "Litecoin", "Bitcoin Cash", "Dogecoin"];
+
+const Body = styled.div`
+  display: grid;
+  width: 100%;
+  overflow: scroll;
+`;
+
+const rows = securities.map((security) => <Row key={security} security={security} />);
 
 const Macroanalysis = () => {
-  return (
-    <div>
-      <div>Macroanalysis - rows of tiles for different securities</div>
-      <PerformanceStamp value={5.96} data={series} />
-    </div>
-  );
+  return <Body>{rows}</Body>;
 };
 
 export default Macroanalysis;

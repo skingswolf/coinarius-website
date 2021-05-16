@@ -52,7 +52,7 @@ const ChartLabel = styled.div`
   height: 12px;
   font-size: 9px;
   margin-right: 1px;
-  text-align: center
+  text-align: center;
 `;
 
 const LineChart = styled.div`

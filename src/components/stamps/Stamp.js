@@ -7,8 +7,12 @@ const Border = styled.div`
   width: 111px;
   height: 120px;
   background: #1c2024;
+  // background: linear-gradient(45deg, #8f151c 0%, #ed326a 100%);
+  // background: linear-gradient(242.74deg, #98d757 0.56%, #0b5946 100%);
+  // border-color: transparent;
   border: 1px solid #2f3135;
   border-radius: 4px;
+  margin-right: 7px;
 `;
 
 const Title = styled.span`

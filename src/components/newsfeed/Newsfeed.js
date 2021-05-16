@@ -10,7 +10,7 @@ const StyledNewsStory = styled.div`
 `;
 
 const newsfeedItems = newsStories.map((newsStory) => (
-  <StyledNewsStory>
+  <StyledNewsStory key={newsStory.title}>
     <div>
       <div>{newsStory.title}</div>
       <div>
