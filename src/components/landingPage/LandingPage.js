@@ -21,7 +21,7 @@ const LandingPage = () => (
     onChange={(size) => localStorage.setItem("splitVerticalPosition", calculateWidth(size))}
   >
     <Newsfeed />
-    <StyledHorizontalSplitPane split="horizontal" defaultSize="45%">
+    <StyledHorizontalSplitPane split="horizontal" defaultSize="57%">
       <Macroanalysis />
       <Microanalysis />
     </StyledHorizontalSplitPane>
