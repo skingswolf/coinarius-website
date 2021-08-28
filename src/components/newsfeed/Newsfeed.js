@@ -1,10 +1,19 @@
-import React, { useEffect, useState }  from "react";
+import { css } from "@emotion/react";
+import React, { useEffect, useState } from "react";
+import MoonLoader from "react-spinners/MoonLoader";
 import styled from "styled-components";
 
 const StyledNewsStory = styled.div`
   border: red solid 1px;
   margin: 15px 15px 0 15px;
   padding: 15px;
+`;
+
+// Can be a string as well. Need to ensure each key-value pair ends with ;
+const loaderOverride = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
 `;
 
 const getNewsfeedItems = (newsStories) => {
@@ -49,7 +58,11 @@ const Newsfeed = () => {
     fetchData();
   }, []);
 
-  return news.isLoading ? "Fetching News Stories ..." : getNewsfeedItems(news.stories);
+  return news.isLoading ? (
+    <MoonLoader color="red" loading={news.isLoading} css={loaderOverride} size={150} />
+  ) : (
+    getNewsfeedItems(news.stories)
+  );
 };
 
 export default Newsfeed;
