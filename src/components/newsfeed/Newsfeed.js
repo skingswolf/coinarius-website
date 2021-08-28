@@ -1,7 +1,7 @@
 import { css } from "@emotion/react";
 import io from "socket.io-client";
-import React, { useEffect, useState } from "react";
 import MoonLoader from "react-spinners/MoonLoader";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const StyledNewsStory = styled.div`
@@ -10,7 +10,6 @@ const StyledNewsStory = styled.div`
   padding: 15px;
 `;
 
-// Can be a string as well. Need to ensure each key-value pair ends with ;
 const loaderOverride = css`
   display: block;
   margin: 0 auto;
@@ -61,7 +60,7 @@ const Newsfeed = () => {
     fetchData();
   }, []);
 
-  // Connect and fetch data from coinarius-nlp WebSocket service.
+  // Connect and fetch data from Coinarius NLP WebSocket service.
   useEffect(() => {
     console.log("Initialising socket client for Coinarius NLP WebSocket service.");
     socket = io(nlpAnalyticsUrl);

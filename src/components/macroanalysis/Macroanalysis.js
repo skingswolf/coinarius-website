@@ -11,22 +11,20 @@ const Body = styled.div`
   overflow: scroll;
 `;
 
-const getRows = (securities, series, volume) => {
-  console.log(securities)
-
+const getRows = (securities, analytics) => {
   return securities.map((security) => (
-    <Row key={security} security={security} series={series} volume={volume} />
+    <Row key={security} security={security} analytics={analytics} />
   ));
 };
 
-const Macroanalysis = ({ securities, series, volume }) => {
-  return <Body>{getRows(securities, series, volume)}</Body>;
+const Macroanalysis = ({ analytics }) => {
+  const securities = Object.keys(analytics);
+
+  return <Body>{getRows(securities, analytics)}</Body>;
 };
 
 Macroanalysis.propTypes = {
-  securities: PropTypes.array.isRequired,
-  series: PropTypes.array.isRequired,
-  volume: PropTypes.array.isRequired
+  analytics: PropTypes.object.isRequired
 };
 
 export default Macroanalysis;

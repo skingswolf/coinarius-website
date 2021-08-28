@@ -18,10 +18,12 @@ const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth
   }
 
   const chartLineMargin = 1;
-  const values = data.map((elem) => elem.value);
+
+  // First element is time, second element is the data value itself
+  const values = data.map((elem) => elem[1]);
 
   const xScale = scaleTime()
-    .domain([new Date(data[0].time), new Date(data[data.length - 1].time)])
+    .domain([new Date(data[0][0]), new Date(data[data.length - 1][0])])
     .range([chartLineMargin, chartWidth - chartLineMargin - 1]);
 
   const yScale = scaleLinear()
@@ -29,13 +31,13 @@ const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth
     .range([chartHeight - chartLineMargin, chartLineMargin]);
 
   const path = d3Line()
-    .x((elem) => xScale(new Date(elem.time)))
-    .y((elem) => yScale(elem.value))(data);
+    .x((elem) => xScale(new Date(elem[0])))
+    .y((elem) => yScale(elem[1]))(data);
 
   const areaPath = d3Area()
-    .x((elem) => xScale(new Date(elem.time)))
+    .x((elem) => xScale(new Date(elem[0])))
     .y0(yScale(0))
-    .y1((elem) => yScale(elem.value))(data);
+    .y1((elem) => yScale(elem[1]))(data);
 
   return (
     <SVGComponent height={chartHeight} width="100%" role="img" title={title}>

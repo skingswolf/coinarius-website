@@ -19,14 +19,16 @@ const PercentValue = styled.span`
 `;
 
 const DisplayWithPercent = ({ value }) => {
-  if (value > 0) {
-    return <PercentValue className="value positive">+{Math.abs(value)}%</PercentValue>;
+  const roundedValue = value.toPrecision(3);
+
+  if (roundedValue > 0) {
+    return <PercentValue className="value positive">+{Math.abs(roundedValue)}%</PercentValue>;
   }
-  if (value < 0) {
-    return <PercentValue className="value negative">-{Math.abs(value)}%</PercentValue>;
+  if (roundedValue < 0) {
+    return <PercentValue className="value negative">-{Math.abs(roundedValue)}%</PercentValue>;
   }
 
-  return <PercentValue className="value">{value}%</PercentValue>;
+  return <PercentValue className="value">{roundedValue}%</PercentValue>;
 };
 
 DisplayWithPercent.propTypes = {
@@ -39,7 +41,9 @@ const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth
   }
 
   const chartLineMargin = 1;
+  console.log(data);
   const values = data.map((elem) => elem.value);
+  console.log(values);
 
   const xScale = scaleTime()
     .domain([new Date(data[0].time), new Date(data[data.length - 1].time)])
