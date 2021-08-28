@@ -7,17 +7,18 @@ import { line as d3Line, area as d3Area } from "d3-shape";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+const PercentValue = styled.span`
+  position: absolute;
+  width: 100%;
+  top: 4px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+`;
+
 const DisplayWithPercent = ({ value }) => {
-  const PercentValue = styled.span`
-    position: absolute;
-    width: 100%;
-    top: 4px;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 13px;
-    line-height: 20px;
-    text-align: center;
-  `;
 
   if (value > 0) {
     return <PercentValue className="value positive">+{Math.abs(value)}%</PercentValue>;
