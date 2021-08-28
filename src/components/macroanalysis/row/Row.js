@@ -2,7 +2,11 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import AutocorrelationStamp from "../../stamps/autocorrelation/AutocorrelationStamp";
+import BitcoinCorrelationStamp from "../../stamps/bitcoinCorrelation/BitcoinCorrelationStamp";
+import MovingAverageStamp from "../../stamps/movingAverage/MovingAverageStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
+import RSIStamp from "../../stamps/rsi/RSIStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
 import { series, volume } from "../../stamps/sample-data";
 
@@ -33,11 +37,11 @@ const Row = ({ security }) => {
       <SecurityName>{security}</SecurityName>
       <Stamps>
         <PerformanceStamp value={5.96} data={series} />
-        <PerformanceStamp value={-1.04} data={series} />
+        <AutocorrelationStamp value={-0.5} data={series} />
         <VolumeStamp value={3} data={volume} />
-        <PerformanceStamp value={1.3} data={series} />
-        <PerformanceStamp value={-4} data={series} />
-        <PerformanceStamp value={2.69} data={series} />
+        <MovingAverageStamp value={1.3} data={series} />
+        <BitcoinCorrelationStamp value={0.77} data={series} />
+        <RSIStamp value={2.69} data={series} />
       </Stamps>
     </Body>
   );

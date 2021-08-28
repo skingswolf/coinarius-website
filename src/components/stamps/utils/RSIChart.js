@@ -7,7 +7,7 @@ import { line as d3Line, area as d3Area } from "d3-shape";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const SVGComponent = styled.svg`
+const SvgComponent = styled.svg`
   position: absolute;
   top: 0;
 `;
@@ -38,12 +38,12 @@ const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth
     .y1((elem) => yScale(elem.value))(data);
 
   return (
-    <SVGComponent height={chartHeight} width="100%" role="img" title={title}>
+    <SvgComponent height={chartHeight} width="100%" role="img" title={title}>
       <g transform="translate(0,0)" fill="transparent">
         <path stroke={strokeColour} strokeWidth={strokeWidth} d={path} />
         {fillColour ? <path d={areaPath} fill={fillColour} /> : null}
       </g>
-    </SVGComponent>
+    </SvgComponent>
   );
 };
 
