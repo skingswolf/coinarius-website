@@ -9895,6 +9895,11 @@ react-scripts@3.4.1:
   optionalDependencies:
     fsevents "2.1.2"
 
+react-spinner@^0.2.7:
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/react-spinner/-/react-spinner-0.2.7.tgz#ea3ca3375dd7a54edbb5cc01d17496a2e2fc14db"
+  integrity sha1-6jyjN13XpU7btcwB0XSWouL8FNs=
+
 react-split-pane@^0.1.92:
   version "0.1.92"
   resolved "https://registry.yarnpkg.com/react-split-pane/-/react-split-pane-0.1.92.tgz#68242f72138aed95dd5910eeb9d99822c4fc3a41"

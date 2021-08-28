@@ -19,7 +19,6 @@ const PercentValue = styled.span`
 `;
 
 const DisplayWithPercent = ({ value }) => {
-
   if (value > 0) {
     return <PercentValue className="value positive">+{Math.abs(value)}%</PercentValue>;
   }

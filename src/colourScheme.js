@@ -1,5 +1,5 @@
-export const colourScheme = {
-    primaryColour: "",
-    secondaryColour: "",
-    tertiaryColour: "",
+export default {
+  primaryColour: "",
+  secondaryColour: "",
+  tertiaryColour: ""
 };

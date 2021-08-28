@@ -1,7 +1,5 @@
-import React from "react";
+import React, { useEffect, useState }  from "react";
 import styled from "styled-components";
-
-import newsStories from "./newsStories";
 
 const StyledNewsStory = styled.div`
   border: red solid 1px;
@@ -9,18 +7,49 @@ const StyledNewsStory = styled.div`
   padding: 15px;
 `;
 
-const newsfeedItems = newsStories.map((newsStory) => (
-  <StyledNewsStory key={newsStory.title}>
-    <div>
-      <div>{newsStory.title}</div>
+const getNewsfeedItems = (newsStories) => {
+  return newsStories.map((newsStory) => (
+    <StyledNewsStory key={newsStory.title}>
       <div>
-        <span>{newsStory.publisher}</span>
-        <span>{newsStory.time}</span>
+        <div>{newsStory.title}</div>
+        <div>
+          <span>{newsStory.publisher}</span>
+          <span>{newsStory.time}</span>
+        </div>
       </div>
-    </div>
-  </StyledNewsStory>
-));
+    </StyledNewsStory>
+  ));
+};
 
-const Newsfeed = () => newsfeedItems;
+const Newsfeed = () => {
+  const [news, setNews] = useState({
+    isLoading: true,
+    stories: null
+  });
+
+  useEffect(() => {
+    const url = "https://coinarius-nlp.herokuapp.com/news-stories";
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch(url);
+        const json = await response.json();
+
+        console.log(json);
+
+        setNews({
+          isLoading: false,
+          stories: json.news_stories
+        });
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return news.isLoading ? "Fetching News Stories ..." : getNewsfeedItems(news.stories);
+};
 
 export default Newsfeed;
