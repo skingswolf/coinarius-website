@@ -19,7 +19,7 @@ const loaderOverride = css`
 
 const getNewsfeedItems = (newsStories) => {
   return newsStories.map((newsStory) => (
-    <StyledNewsStory key={newsStory.title}>
+    <StyledNewsStory key={newsStory.title + Date.now()}>
       <div>
         <div>{newsStory.title}</div>
         <div>
@@ -63,7 +63,7 @@ const Newsfeed = () => {
 
   // Connect and fetch data from coinarius-nlp WebSocket service.
   useEffect(() => {
-    console.log("Initialising socket.");
+    console.log("Initialising socket client for Coinarius NLP WebSocket service.");
     socket = io(nlpAnalyticsUrl);
     socket.on("connect", () => {
       console.log("Successfully connected to Coinarius NLP WebSocket service.");

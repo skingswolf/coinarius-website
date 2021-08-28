@@ -1,9 +1,9 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Row from "./row/Row";
-
-const securities = ["Bitcoin", "Ethereum", "Litecoin", "Bitcoin Cash", "Dogecoin"];
 
 const Body = styled.div`
   display: grid;
@@ -11,10 +11,22 @@ const Body = styled.div`
   overflow: scroll;
 `;
 
-const rows = securities.map((security) => <Row key={security} security={security} />);
+const getRows = (securities, series, volume) => {
+  console.log(securities)
 
-const Macroanalysis = () => {
-  return <Body>{rows}</Body>;
+  return securities.map((security) => (
+    <Row key={security} security={security} series={series} volume={volume} />
+  ));
+};
+
+const Macroanalysis = ({ securities, series, volume }) => {
+  return <Body>{getRows(securities, series, volume)}</Body>;
+};
+
+Macroanalysis.propTypes = {
+  securities: PropTypes.array.isRequired,
+  series: PropTypes.array.isRequired,
+  volume: PropTypes.array.isRequired
 };
 
 export default Macroanalysis;

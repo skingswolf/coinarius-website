@@ -3,14 +3,12 @@ import SplitPane from "react-split-pane";
 import styled from "styled-components";
 import "antd/dist/antd.css";
 
+import Analytics from "../analytics/Analytics";
 import Newsfeed from "../newsfeed/Newsfeed";
-import Macroanalysis from "../macroanalysis/Macroanalysis";
-import Microanalysis from "../microanalysis/Microanalysis";
 
 const StyledVerticalSplitPane = styled(SplitPane)`
   position: inherit !important;
 `;
-const StyledHorizontalSplitPane = styled(SplitPane)``;
 
 const calculateWidth = (size) => `${(size / window.innerWidth) * 100}%`;
 
@@ -21,10 +19,7 @@ const LandingPage = () => (
     onChange={(size) => localStorage.setItem("splitVerticalPosition", calculateWidth(size))}
   >
     <Newsfeed />
-    <StyledHorizontalSplitPane split="horizontal" defaultSize="57%">
-      <Macroanalysis />
-      <Microanalysis />
-    </StyledHorizontalSplitPane>
+    <Analytics />
   </StyledVerticalSplitPane>
 );
 

@@ -1,3 +1,4 @@
+/* eslint-disable react/forbid-prop-types */
 import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -8,7 +9,6 @@ import MovingAverageStamp from "../../stamps/movingAverage/MovingAverageStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 import RSIStamp from "../../stamps/rsi/RSIStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
-import { series, volume } from "../../stamps/sample-data";
 
 const Body = styled.div`
   width: 100%;
@@ -31,7 +31,7 @@ const Stamps = styled.div`
   justify-content: center;
 `;
 
-const Row = ({ security }) => {
+const Row = ({ security, series, volume }) => {
   return (
     <Body>
       <SecurityName>{security}</SecurityName>
@@ -48,7 +48,9 @@ const Row = ({ security }) => {
 };
 
 Row.propTypes = {
-  security: PropTypes.string.isRequired
+  security: PropTypes.string.isRequired,
+  series: PropTypes.array.isRequired,
+  volume: PropTypes.array.isRequired
 };
 
 export default Row;
