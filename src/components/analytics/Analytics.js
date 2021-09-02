@@ -39,7 +39,7 @@ const formatAnalytics = (apiAnalytics) => {
     });
 
     outputAnalytics[security].name = apiAnalytics[security].name;
-    outputAnalytics[security].total_z_score = apiAnalytics[security].total_z_score;
+    outputAnalytics[security].totalZScore = apiAnalytics[security].total_z_score;
   });
 
   return outputAnalytics;
@@ -67,7 +67,7 @@ const updateAnalytics = (apiAnalytics, currentAnalytics) => {
     });
 
     // eslint-disable-next-line no-param-reassign
-    currentAnalytics[security].total_z_score = apiAnalytics[security].total_z_score;
+    currentAnalytics[security].totalZScore = apiAnalytics[security].total_z_score;
   });
 
   return currentAnalytics;
@@ -83,7 +83,7 @@ const Analytics = () => {
   });
 
   // eslint-disable-next-line no-unused-vars
-  const [sortKey, setSortKey] = useState("total_z_score");
+  const [sortKey, setSortKey] = useState("totalZScore");
 
   // Sort rows in descending order in whatever chosen key.
   const sortRows = (row, otherRow) => otherRow[sortKey] - row[sortKey];

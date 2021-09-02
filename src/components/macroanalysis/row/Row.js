@@ -31,33 +31,71 @@ const Stamps = styled.div`
   justify-content: center;
 `;
 
-const Row = ({ security, analytics }) => {
-  const securityName = analytics[security].name;
-
+const createStamp = (analyticName, stampAnalytics) => {
   // Performance Stamp.
-  const returnTimeSeries = analytics[security].return.timeSeries;
-  const returnNumOfDays = 31;
-  const returnTimeSeriesTail = returnTimeSeries.slice(
-    Math.max(returnTimeSeries.length - returnNumOfDays, 1)
-  );
-  const lastReturn = returnTimeSeriesTail[returnTimeSeriesTail.length - 1][1];
+  if (analyticName === "return") {
+    const returnTimeSeries = stampAnalytics.return.timeSeries;
+    const returnNumOfDays = 31;
+    const returnTimeSeriesTail = returnTimeSeries.slice(
+      Math.max(returnTimeSeries.length - returnNumOfDays, 1)
+    );
+    const lastReturn = returnTimeSeriesTail[returnTimeSeriesTail.length - 1][1];
+
+    return <PerformanceStamp key={analyticName} value={lastReturn} data={returnTimeSeriesTail} />;
+  }
 
   // Volume Stamp.
-  const volumeTimeSeries = analytics[security].volume.timeSeries;
-  const volumeNumOfDays = 5;
-  const volumeTimeSeriesTail = volumeTimeSeries.slice(
-    Math.max(volumeTimeSeries.length - volumeNumOfDays, 1)
-  );
-  const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
-  const lastVolume = volumes[volumes.length - 1];
+  if (analyticName === "volume") {
+    const volumeTimeSeries = stampAnalytics.volume.timeSeries;
+    const volumeNumOfDays = 5;
+    const volumeTimeSeriesTail = volumeTimeSeries.slice(
+      Math.max(volumeTimeSeries.length - volumeNumOfDays, 1)
+    );
+    const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
+    const lastVolume = volumes[volumes.length - 1];
+
+    return <VolumeStamp key={analyticName} value={lastVolume} data={volumes} />;
+  }
+
+  return <div key={analyticName}>Unknown Stamp</div>;
+};
+
+const Row = ({ security, analytics }) => {
+  const securityName = analytics[security].name;
+  const nonStampAnalytics = [
+    "autocorrelation",
+    "btc_correlation",
+    "eth_correlation",
+    "market_cap",
+    "price_diff",
+    "return_30d",
+    "name",
+    "totalZScore"
+  ];
+
+  let stampAnalytics = [{ analyticName: "correlation", zScore: 0 }];
+
+  Object.keys(analytics[security]).forEach((analyticName) => {
+    if (nonStampAnalytics.includes(analyticName)) {
+      return;
+    }
+
+    const { zScore } = analytics[security][analyticName];
+
+    stampAnalytics.push({
+      analyticName,
+      zScore
+    });
+  });
+
+  stampAnalytics.sort((stamp, otherStamp) => Math.abs(otherStamp.zScore) - Math.abs(stamp.zScore));
+  stampAnalytics = stampAnalytics.map((s) => s.analyticName);
 
   return (
     <Body>
       <SecurityName>{securityName}</SecurityName>
       <Stamps>
-        <PerformanceStamp value={lastReturn} data={returnTimeSeriesTail} />
-        <VolumeStamp value={lastVolume} data={volumes} />
-
+        {stampAnalytics.map((analyticName) => createStamp(analyticName, analytics[security]))}
         {/* <AutocorrelationStamp value={-0.5} data={series} />
         <MovingAverageStamp value={1.3} data={series} />
         <BitcoinCorrelationStamp value={0.77} data={series} />

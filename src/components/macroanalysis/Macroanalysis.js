@@ -3,6 +3,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+// eslint-disable-next-line import/no-named-as-default
 import Row from "./row/Row";
 
 const Body = styled.div`
@@ -23,8 +24,8 @@ const Macroanalysis = ({ analytics, sortRows }) => {
 
     return {
       security,
-      market_cap: timeSeries[timeSeries.length - 1][1],
-      total_z_score: analytics[security].total_z_score
+      marketCap: timeSeries[timeSeries.length - 1][1],
+      totalZScore: analytics[security].totalZScore
     };
   });
 
