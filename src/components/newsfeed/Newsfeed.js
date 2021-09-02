@@ -1,5 +1,4 @@
 import { css } from "@emotion/react";
-import io from "socket.io-client";
 import MoonLoader from "react-spinners/MoonLoader";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -31,7 +30,6 @@ const getNewsfeedItems = (newsStories) => {
 };
 
 const nlpAnalyticsUrl = "https://coinarius-nlp.herokuapp.com";
-let socket = null;
 
 const Newsfeed = () => {
   const [news, setNews] = useState({
@@ -58,33 +56,6 @@ const Newsfeed = () => {
     };
 
     fetchData();
-  }, []);
-
-  // Connect and fetch data from Coinarius NLP WebSocket service.
-  useEffect(() => {
-    console.log("Initialising socket client for Coinarius NLP WebSocket service.");
-    socket = io(nlpAnalyticsUrl);
-    socket.on("connect", () => {
-      console.log("Successfully connected to Coinarius NLP WebSocket service.");
-      socket.emit("register", { data: "register" });
-    });
-
-    socket.on(
-      "fresh_nlp_analytics",
-      (msg) => {
-        console.log("Fresh data received from Coinarius NLP WebSocket service.");
-        const updatedNewsStories = msg.news_stories;
-
-        setNews((n) => ({ ...n, stories: updatedNewsStories.concat(n.stories) }));
-      },
-      []
-    );
-
-    // eslint-disable-next-line consistent-return
-    return () => {
-      console.log("Disconnecting from Coinarius NLP WebSocket service.");
-      socket.disconnect();
-    };
   }, []);
 
   return news.isLoading ? (
