@@ -32,6 +32,8 @@ const Stamps = styled.div`
 `;
 
 const Row = ({ security, analytics }) => {
+  const securityName = analytics[security].name;
+
   // Performance Stamp.
   const returnTimeSeries = analytics[security].return.timeSeries;
   const returnNumOfDays = 31;
@@ -51,7 +53,7 @@ const Row = ({ security, analytics }) => {
 
   return (
     <Body>
-      <SecurityName>{security}</SecurityName>
+      <SecurityName>{securityName}</SecurityName>
       <Stamps>
         <PerformanceStamp value={lastReturn} data={returnTimeSeriesTail} />
         <VolumeStamp value={lastVolume} data={volumes} />
