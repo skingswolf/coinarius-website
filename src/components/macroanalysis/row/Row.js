@@ -31,7 +31,7 @@ const Stamps = styled.div`
   justify-content: center;
 `;
 
-const createStamp = (analyticName, stampAnalytics) => {
+const createStamp = (analyticName, zScore, stampAnalytics) => {
   // Performance Stamp.
   if (analyticName === "return") {
     const returnTimeSeries = stampAnalytics.return.timeSeries;
@@ -41,7 +41,14 @@ const createStamp = (analyticName, stampAnalytics) => {
     );
     const lastReturn = returnTimeSeriesTail[returnTimeSeriesTail.length - 1][1];
 
-    return <PerformanceStamp key={analyticName} value={lastReturn} data={returnTimeSeriesTail} />;
+    return (
+      <PerformanceStamp
+        key={analyticName}
+        value={lastReturn}
+        data={returnTimeSeriesTail}
+        zScore={zScore}
+      />
+    );
   }
 
   // Volume Stamp.
@@ -54,7 +61,7 @@ const createStamp = (analyticName, stampAnalytics) => {
     const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
     const lastVolume = volumes[volumes.length - 1];
 
-    return <VolumeStamp key={analyticName} value={lastVolume} data={volumes} />;
+    return <VolumeStamp key={analyticName} value={lastVolume} data={volumes} zScore={zScore} />;
   }
 
   return <div key={analyticName}>Unknown Stamp</div>;
@@ -73,7 +80,7 @@ const Row = ({ security, analytics }) => {
     "totalZScore"
   ];
 
-  let stampAnalytics = [{ analyticName: "correlation", zScore: 0 }];
+  const stampAnalytics = [{ analyticName: "correlation", zScore: 0 }];
 
   Object.keys(analytics[security]).forEach((analyticName) => {
     if (nonStampAnalytics.includes(analyticName)) {
@@ -89,13 +96,15 @@ const Row = ({ security, analytics }) => {
   });
 
   stampAnalytics.sort((stamp, otherStamp) => Math.abs(otherStamp.zScore) - Math.abs(stamp.zScore));
-  stampAnalytics = stampAnalytics.map((s) => s.analyticName);
+  // stampAnalytics = stampAnalytics.map((s) => s.analyticName);
 
   return (
     <Body>
       <SecurityName>{securityName}</SecurityName>
       <Stamps>
-        {stampAnalytics.map((analyticName) => createStamp(analyticName, analytics[security]))}
+        {stampAnalytics.map(({ analyticName, zScore }) =>
+          createStamp(analyticName, zScore, analytics[security])
+        )}
         {/* <AutocorrelationStamp value={-0.5} data={series} />
         <MovingAverageStamp value={1.3} data={series} />
         <BitcoinCorrelationStamp value={0.77} data={series} />

@@ -67,9 +67,9 @@ const LineChart = styled.div`
 /**
  * @visibleName Performance-Stamp
  */
-const PerformanceStamp = ({ value, data, isNoData }) => {
+const PerformanceStamp = ({ value, data, isNoData, zScore }) => {
   return (
-    <Stamp title="Performance">
+    <Stamp title="Performance" zScore={zScore}>
       <Body>
         {isNoData ? (
           <NoData />
@@ -106,7 +106,8 @@ PerformanceStamp.defaultProps = {
 PerformanceStamp.propTypes = {
   value: PropTypes.number.isRequired,
   data: PropTypes.array.isRequired,
-  isNoData: PropTypes.bool
+  isNoData: PropTypes.bool,
+  zScore: PropTypes.number.isRequired
 };
 
 export default PerformanceStamp;

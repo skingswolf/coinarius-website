@@ -2,13 +2,22 @@ import React from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
+const significanceLevel = 0.5;
 const Border = styled.div`
   position: relative;
   width: 111px;
   height: 120px;
-  background: #1c2024;
-  // background: linear-gradient(45deg, #8f151c 0%, #ed326a 100%);
-  // background: linear-gradient(242.74deg, #98d757 0.56%, #0b5946 100%);
+  background: ${(props) => {
+    if (props.zScore >= significanceLevel) {
+      return "linear-gradient(242.74deg, #98d757 0.56%, #0b5946 100%)";
+    }
+
+    if (props.zScore <= -1 * significanceLevel) {
+      return "linear-gradient(45deg, #8f151c 0%, #ed326a 100%)";
+    }
+
+    return "#1c2024";
+  }};
   // border-color: transparent;
   border: 1px solid #2f3135;
   border-radius: 4px;
@@ -27,9 +36,9 @@ const Title = styled.span`
   color: #ffffff;
 `;
 
-const Stamp = ({ title, children }) => {
+const Stamp = ({ title, children, zScore }) => {
   return (
-    <Border>
+    <Border zScore={zScore}>
       <Title>{title}</Title>
       {children}
     </Border>
@@ -37,12 +46,14 @@ const Stamp = ({ title, children }) => {
 };
 
 Stamp.defaultProps = {
-  children: null
+  children: null,
+  zScore: 0
 };
 
 Stamp.propTypes = {
   title: PropTypes.string.isRequired,
-  children: PropTypes.node
+  children: PropTypes.node,
+  zScore: PropTypes.number
 };
 
 export default Stamp;
