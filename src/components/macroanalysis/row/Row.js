@@ -34,13 +34,17 @@ const Stamps = styled.div`
 const Row = ({ security, analytics }) => {
   // Performance Stamp.
   const returnTimeSeries = analytics[security].return.timeSeries;
-  const lastReturn = returnTimeSeries[returnTimeSeries.length - 1][1];
+  const returnNumOfDays = 31;
+  const returnTimeSeriesTail = returnTimeSeries.slice(
+    Math.max(returnTimeSeries.length - returnNumOfDays, 1)
+  );
+  const lastReturn = returnTimeSeriesTail[returnTimeSeriesTail.length - 1][1];
 
   // Volume Stamp.
   const volumeTimeSeries = analytics[security].volume.timeSeries;
-  const numOfDays = 5;
+  const volumeNumOfDays = 5;
   const volumeTimeSeriesTail = volumeTimeSeries.slice(
-    Math.max(volumeTimeSeries.length - numOfDays, 1)
+    Math.max(volumeTimeSeries.length - volumeNumOfDays, 1)
   );
   const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
   const lastVolume = volumes[volumes.length - 1];
@@ -49,7 +53,7 @@ const Row = ({ security, analytics }) => {
     <Body>
       <SecurityName>{security}</SecurityName>
       <Stamps>
-        <PerformanceStamp value={lastReturn} data={returnTimeSeries} />
+        <PerformanceStamp value={lastReturn} data={returnTimeSeriesTail} />
         <VolumeStamp value={lastVolume} data={volumes} />
 
         {/* <AutocorrelationStamp value={-0.5} data={series} />
