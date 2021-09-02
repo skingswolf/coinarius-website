@@ -25,6 +25,10 @@ const formatAnalytics = (apiAnalytics) => {
     outputAnalytics[security] = {};
 
     Object.keys(apiAnalytics[security]).forEach((analytic) => {
+      if (analytic === "name" || analytic === "total_z_score") {
+        return;
+      }
+
       const timeSeries = apiAnalytics[security][analytic].time_series;
       timeSeries[timeSeries.length - 1][1] = apiAnalytics[security][analytic][`last_${analytic}`];
 
@@ -33,6 +37,9 @@ const formatAnalytics = (apiAnalytics) => {
         zScore: apiAnalytics[security][analytic].last_z_score
       };
     });
+
+    outputAnalytics[security].name = apiAnalytics[security].name;
+    outputAnalytics[security].total_z_score = apiAnalytics[security].total_z_score;
   });
 
   return outputAnalytics;
@@ -41,6 +48,10 @@ const formatAnalytics = (apiAnalytics) => {
 const updateAnalytics = (apiAnalytics, currentAnalytics) => {
   Object.keys(apiAnalytics).forEach((security) => {
     Object.keys(apiAnalytics[security]).forEach((analytic) => {
+      if (analytic === "name" || analytic === "total_z_score") {
+        return;
+      }
+
       const timeSeries = apiAnalytics[security][analytic].time_series;
       const updatedTimeSeries =
         timeSeries == null ? currentAnalytics[security][analytic].timeSeries : timeSeries;
@@ -54,10 +65,13 @@ const updateAnalytics = (apiAnalytics, currentAnalytics) => {
         zScore: apiAnalytics[security][analytic].last_z_score
       };
     });
+
+    // eslint-disable-next-line no-param-reassign
+    currentAnalytics[security].total_z_score = apiAnalytics[security].total_z_score;
   });
 
   return currentAnalytics;
-}
+};
 
 const analyticsBaseUrl = "https://coinarius-analytics.herokuapp.com";
 let socket = null;
