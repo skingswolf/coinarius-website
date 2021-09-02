@@ -65,6 +65,21 @@ const BarChartFooter = styled.div`
  * @visibleName Volume-Stamp
  */
 const VolumeStamp = ({ value, data, isNoData }) => {
+  const million = 1000000;
+  const billion = 1000000000;
+  let roundedValue = value.toPrecision(3);
+  let units = "";
+
+  if (value % billion > 1) {
+    units = "b";
+    roundedValue /= billion;
+  } else if (value % million > 1) {
+    units = "m";
+    roundedValue /= million;
+  }
+
+  const figure = `${roundedValue}${units}`;
+
   return (
     <Stamp title="Volume">
       <Body>
@@ -72,7 +87,7 @@ const VolumeStamp = ({ value, data, isNoData }) => {
           <NoData />
         ) : (
           <>
-            <Volume>{value}</Volume>
+            <Volume>{figure}</Volume>
             <SubTitle>30d AVG</SubTitle>
             <BarChartContainer>
               <BarChart data={data} title="Volume stamp" />

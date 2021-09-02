@@ -8,7 +8,7 @@ import styled from "styled-components";
 // import MovingAverageStamp from "../../stamps/movingAverage/MovingAverageStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 // import RSIStamp from "../../stamps/rsi/RSIStamp";
-// import VolumeStamp from "../../stamps/volume/VolumeStamp";
+import VolumeStamp from "../../stamps/volume/VolumeStamp";
 
 const Body = styled.div`
   width: 100%;
@@ -32,17 +32,27 @@ const Stamps = styled.div`
 `;
 
 const Row = ({ security, analytics }) => {
+  // Performance Stamp.
   const returnTimeSeries = analytics[security].return.timeSeries;
   const lastReturn = returnTimeSeries[returnTimeSeries.length - 1][1];
+
+  // Volume Stamp.
+  const volumeTimeSeries = analytics[security].volume.timeSeries;
+  const numOfDays = 5;
+  const volumeTimeSeriesTail = volumeTimeSeries.slice(
+    Math.max(volumeTimeSeries.length - numOfDays, 1)
+  );
+  const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
+  const lastVolume = volumes[volumes.length - 1];
 
   return (
     <Body>
       <SecurityName>{security}</SecurityName>
       <Stamps>
         <PerformanceStamp value={lastReturn} data={returnTimeSeries} />
+        <VolumeStamp value={lastVolume} data={volumes} />
 
         {/* <AutocorrelationStamp value={-0.5} data={series} />
-        <VolumeStamp value={3} data={volume} />
         <MovingAverageStamp value={1.3} data={series} />
         <BitcoinCorrelationStamp value={0.77} data={series} />
         <RSIStamp value={2.69} data={series} /> */}
