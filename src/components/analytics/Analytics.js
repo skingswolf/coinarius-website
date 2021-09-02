@@ -82,6 +82,12 @@ const Analytics = () => {
     data: null
   });
 
+  // eslint-disable-next-line no-unused-vars
+  const [sortKey, setSortKey] = useState("total_z_score");
+
+  // Sort rows in descending order in whatever chosen key.
+  const sortRows = (row, otherRow) => otherRow[sortKey] - row[sortKey];
+
   // Fetch data from /analytics endpoint.
   useEffect(() => {
     const analyticsUrl = `${analyticsBaseUrl}/analytics`;
@@ -138,7 +144,7 @@ const Analytics = () => {
       {analytics.isLoading ? (
         <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
       ) : (
-        <Macroanalysis analytics={analytics.data} />
+        <Macroanalysis analytics={analytics.data} sortRows={sortRows} />
       )}
       <Microanalysis />
     </StyledHorizontalSplitPane>

@@ -17,14 +17,26 @@ const getRows = (securities, analytics) => {
   ));
 };
 
-const Macroanalysis = ({ analytics }) => {
-  const securities = Object.keys(analytics);
+const Macroanalysis = ({ analytics, sortRows }) => {
+  let securities = Object.keys(analytics).map((security) => {
+    const { timeSeries } = analytics[security].market_cap;
+
+    return {
+      security,
+      market_cap: timeSeries[timeSeries.length - 1][1],
+      total_z_score: analytics[security].total_z_score
+    };
+  });
+
+  securities.sort(sortRows);
+  securities = securities.map((s) => s.security);
 
   return <Body>{getRows(securities, analytics)}</Body>;
 };
 
 Macroanalysis.propTypes = {
-  analytics: PropTypes.object.isRequired
+  analytics: PropTypes.object.isRequired,
+  sortRows: PropTypes.func.isRequired
 };
 
 export default Macroanalysis;
