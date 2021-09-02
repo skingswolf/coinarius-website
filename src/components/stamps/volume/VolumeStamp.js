@@ -78,7 +78,7 @@ const VolumeStamp = ({ value, data, isNoData }) => {
     roundedValue /= million;
   }
 
-  const figure = `${roundedValue}${units}`;
+  const figure = `$${roundedValue}${units}`;
 
   return (
     <Stamp title="Volume">
