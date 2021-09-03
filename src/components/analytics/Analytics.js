@@ -80,7 +80,9 @@ let socket = null;
 const Analytics = ({ sortKey }) => {
   const [analytics, setAnalytics] = useState({
     isLoading: true,
-    data: null
+    data: null,
+    scrollTo: "unknown",
+    scrollToCount: 0
   });
 
   // Fetch data from /analytics endpoint.
@@ -97,10 +99,11 @@ const Analytics = ({ sortKey }) => {
         console.log("Formatting analytics from Coinarius Analytics API.");
         const formattedAnalytics = formatAnalytics(jsonResponse);
 
-        setAnalytics({
+        setAnalytics((a) => ({
+          ...a,
           isLoading: false,
           data: formattedAnalytics
-        });
+        }));
       } catch (error) {
         console.log("error", error);
       }
@@ -134,14 +137,23 @@ const Analytics = ({ sortKey }) => {
     };
   }, []);
 
+  const heatmapClickHandler = (security) => {
+    setAnalytics((a) => ({ ...a, scrollTo: security, scrollToCount: a.scrollToCount + 1 }));
+  };
+
   return (
     <StyledHorizontalSplitPane split="horizontal" defaultSize="57%">
       {analytics.isLoading ? (
         <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
       ) : (
-        <Macroanalysis analytics={analytics.data} sortKey={sortKey} />
+        <Macroanalysis
+          analytics={analytics.data}
+          sortKey={sortKey}
+          scrollTo={analytics.scrollTo}
+          scrollToCount={analytics.scrollToCount}
+        />
       )}
-      <Microanalysis />
+      <Microanalysis heatmapClickHandler={heatmapClickHandler} />
     </StyledHorizontalSplitPane>
   );
 };

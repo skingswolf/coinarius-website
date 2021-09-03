@@ -76,7 +76,7 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
   return <div key={analyticName}>Unknown Stamp</div>;
 };
 
-const Row = ({ security, analytics }) => {
+const Row = React.forwardRef(({ security, analytics }, ref) => {
   const securityName = analytics[security].name;
   const nonStampAnalytics = [
     "autocorrelation",
@@ -108,7 +108,7 @@ const Row = ({ security, analytics }) => {
   // stampAnalytics = stampAnalytics.map((s) => s.analyticName);
 
   return (
-    <Body>
+    <Body ref={ref}>
       <SecurityName>{securityName}</SecurityName>
       <Stamps>
         {stampAnalytics.map(({ analyticName, zScore }) =>
@@ -121,7 +121,7 @@ const Row = ({ security, analytics }) => {
       </Stamps>
     </Body>
   );
-};
+});
 
 Row.propTypes = {
   security: PropTypes.string.isRequired,
