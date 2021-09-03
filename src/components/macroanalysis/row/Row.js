@@ -31,7 +31,7 @@ const Stamps = styled.div`
   justify-content: center;
 `;
 
-const createStamp = (analyticName, zScore, stampAnalytics) => {
+const createStamp = (security, analyticName, zScore, stampAnalytics) => {
   // Performance Stamp.
   if (analyticName === "return") {
     const returnTimeSeries = stampAnalytics.return.timeSeries;
@@ -44,6 +44,7 @@ const createStamp = (analyticName, zScore, stampAnalytics) => {
     return (
       <PerformanceStamp
         key={analyticName}
+        security={security}
         value={lastReturn}
         data={returnTimeSeriesTail}
         zScore={zScore}
@@ -61,7 +62,15 @@ const createStamp = (analyticName, zScore, stampAnalytics) => {
     const volumes = volumeTimeSeriesTail.map((volumeEntry) => volumeEntry[1]);
     const lastVolume = volumes[volumes.length - 1];
 
-    return <VolumeStamp key={analyticName} value={lastVolume} data={volumes} zScore={zScore} />;
+    return (
+      <VolumeStamp
+        key={analyticName}
+        security={security}
+        value={lastVolume}
+        data={volumes}
+        zScore={zScore}
+      />
+    );
   }
 
   return <div key={analyticName}>Unknown Stamp</div>;
@@ -103,7 +112,7 @@ const Row = ({ security, analytics }) => {
       <SecurityName>{securityName}</SecurityName>
       <Stamps>
         {stampAnalytics.map(({ analyticName, zScore }) =>
-          createStamp(analyticName, zScore, analytics[security])
+          createStamp(security, analyticName, zScore, analytics[security])
         )}
         {/* <AutocorrelationStamp value={-0.5} data={series} />
         <MovingAverageStamp value={1.3} data={series} />

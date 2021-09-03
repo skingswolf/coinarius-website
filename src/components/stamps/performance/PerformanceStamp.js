@@ -67,9 +67,11 @@ const LineChart = styled.div`
 /**
  * @visibleName Performance-Stamp
  */
-const PerformanceStamp = ({ value, data, isNoData, zScore }) => {
+const PerformanceStamp = ({ security, value, data, isNoData, zScore }) => {
+  const tooltipText = "Dummy tooltip text placeholder";
+
   return (
-    <Stamp title="Performance" zScore={zScore}>
+    <Stamp security={security} title="Performance" zScore={zScore} tooltipText={tooltipText}>
       <Body>
         {isNoData ? (
           <NoData />
@@ -104,6 +106,7 @@ PerformanceStamp.defaultProps = {
 };
 
 PerformanceStamp.propTypes = {
+  security: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   data: PropTypes.array.isRequired,
   isNoData: PropTypes.bool,

@@ -64,7 +64,9 @@ const BarChartFooter = styled.div`
 /**
  * @visibleName Volume-Stamp
  */
-const VolumeStamp = ({ value, data, isNoData, zScore }) => {
+const VolumeStamp = ({ security, value, data, isNoData, zScore }) => {
+  const tooltipText = "Dummy tooltip text placeholder";
+
   const million = 1000000;
   const billion = 1000000000;
   let roundedValue = value.toPrecision(3);
@@ -81,7 +83,7 @@ const VolumeStamp = ({ value, data, isNoData, zScore }) => {
   const figure = `$${roundedValue}${units}`;
 
   return (
-    <Stamp title="Volume" zScore={zScore}>
+    <Stamp security={security} title="Volume" zScore={zScore} tooltipText={tooltipText}>
       <Body>
         {isNoData ? (
           <NoData />
@@ -105,6 +107,7 @@ VolumeStamp.defaultProps = {
 };
 
 VolumeStamp.propTypes = {
+  security: PropTypes.string.isRequired,
   value: PropTypes.number.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   data: PropTypes.array.isRequired,

@@ -1,4 +1,5 @@
 import React from "react";
+import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 
@@ -36,24 +37,34 @@ const Title = styled.span`
   color: #ffffff;
 `;
 
-const Stamp = ({ title, children, zScore }) => {
+const Stamp = ({ security, title, children, zScore, tooltipText }) => {
+  const tooltipId = `${security}-${title}`;
+
   return (
-    <Border zScore={zScore}>
-      <Title>{title}</Title>
-      {children}
-    </Border>
+    <>
+      <Border data-tip data-for={tooltipId} zScore={zScore}>
+        <Title>{title}</Title>
+        {children}
+      </Border>
+      <ReactTooltip id={tooltipId} aria-haspopup="true">
+        {tooltipText}
+      </ReactTooltip>
+    </>
   );
 };
 
 Stamp.defaultProps = {
   children: null,
-  zScore: 0
+  zScore: 0,
+  tooltipText: "Dummy tooltip placeholder"
 };
 
 Stamp.propTypes = {
+  security: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.node,
-  zScore: PropTypes.number
+  zScore: PropTypes.number,
+  tooltipText: PropTypes.string
 };
 
 export default Stamp;
