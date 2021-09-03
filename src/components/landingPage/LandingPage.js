@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import React from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
@@ -12,15 +13,19 @@ const StyledVerticalSplitPane = styled(SplitPane)`
 
 const calculateWidth = (size) => `${(size / window.innerWidth) * 100}%`;
 
-const LandingPage = () => (
+const LandingPage = ({ sortKey }) => (
   <StyledVerticalSplitPane
     split="vertical"
     defaultSize={localStorage.getItem("splitVerticalPosition") || "30%"}
     onChange={(size) => localStorage.setItem("splitVerticalPosition", calculateWidth(size))}
   >
     <Newsfeed />
-    <Analytics />
+    <Analytics sortKey={sortKey} />
   </StyledVerticalSplitPane>
 );
+
+LandingPage.propTypes = {
+  sortKey: PropTypes.string.isRequired
+};
 
 export default LandingPage;

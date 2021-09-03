@@ -68,3 +68,8 @@ code {
 .Resizer.disabled:hover {
   border-color: transparent;
 }
+
+.ant-switch-checked,
+.ant-switch-checked .ant-switch-inner {
+  background-color: darkcyan !important;
+}

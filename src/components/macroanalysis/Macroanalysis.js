@@ -18,7 +18,7 @@ const getRows = (securities, analytics) => {
   ));
 };
 
-const Macroanalysis = ({ analytics, sortRows }) => {
+const Macroanalysis = ({ analytics, sortKey }) => {
   let securities = Object.keys(analytics).map((security) => {
     const { timeSeries } = analytics[security].market_cap;
 
@@ -29,7 +29,8 @@ const Macroanalysis = ({ analytics, sortRows }) => {
     };
   });
 
-  securities.sort(sortRows);
+  // Sort rows in descending order in whatever chosen key.
+  securities.sort((row, otherRow) => otherRow[sortKey] - row[sortKey]);
   securities = securities.map((s) => s.security);
 
   return <Body>{getRows(securities, analytics)}</Body>;
@@ -37,7 +38,7 @@ const Macroanalysis = ({ analytics, sortRows }) => {
 
 Macroanalysis.propTypes = {
   analytics: PropTypes.object.isRequired,
-  sortRows: PropTypes.func.isRequired
+  sortKey: PropTypes.string.isRequired
 };
 
 export default Macroanalysis;

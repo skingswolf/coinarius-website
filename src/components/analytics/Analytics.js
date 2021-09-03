@@ -3,6 +3,7 @@
 import { css } from "@emotion/react";
 import io from "socket.io-client";
 import MoonLoader from "react-spinners/MoonLoader";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
@@ -76,17 +77,11 @@ const updateAnalytics = (apiAnalytics, currentAnalytics) => {
 const analyticsBaseUrl = "https://coinarius-analytics.herokuapp.com";
 let socket = null;
 
-const Analytics = () => {
+const Analytics = ({ sortKey }) => {
   const [analytics, setAnalytics] = useState({
     isLoading: true,
     data: null
   });
-
-  // eslint-disable-next-line no-unused-vars
-  const [sortKey, setSortKey] = useState("totalZScore");
-
-  // Sort rows in descending order in whatever chosen key.
-  const sortRows = (row, otherRow) => otherRow[sortKey] - row[sortKey];
 
   // Fetch data from /analytics endpoint.
   useEffect(() => {
@@ -144,11 +139,15 @@ const Analytics = () => {
       {analytics.isLoading ? (
         <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
       ) : (
-        <Macroanalysis analytics={analytics.data} sortRows={sortRows} />
+        <Macroanalysis analytics={analytics.data} sortKey={sortKey} />
       )}
       <Microanalysis />
     </StyledHorizontalSplitPane>
   );
+};
+
+Analytics.propTypes = {
+  sortKey: PropTypes.string.isRequired
 };
 
 export default Analytics;
