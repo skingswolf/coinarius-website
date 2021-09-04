@@ -1,5 +1,6 @@
 /* eslint-disable no-continue */
 /* eslint-disable no-restricted-syntax */
+import _ from "lodash";
 import { css } from "@emotion/react";
 import io from "socket.io-client";
 import MoonLoader from "react-spinners/MoonLoader";
@@ -77,7 +78,7 @@ const updateAnalytics = (apiAnalytics, currentAnalytics) => {
 const analyticsBaseUrl = "https://coinarius-analytics.herokuapp.com";
 let socket = null;
 
-const Analytics = ({ sortKey }) => {
+const Analytics = ({ sortKey, verticalPanePosition }) => {
   const [analytics, setAnalytics] = useState({
     isLoading: true,
     data: null,
@@ -91,7 +92,7 @@ const Analytics = ({ sortKey }) => {
 
     const fetchData = async () => {
       try {
-        console.log("Fetching analytics from Coinarius Analytics  API.");
+        console.log("Fetching analytics from Coinarius Analytics API.");
         const response = await fetch(analyticsUrl);
         const jsonResponse = await response.json();
         console.log(jsonResponse);
@@ -141,13 +142,23 @@ const Analytics = ({ sortKey }) => {
     setAnalytics((a) => ({ ...a, scrollTo: security, scrollToCount: a.scrollToCount + 1 }));
   };
 
+  const defaultHorizontalPanePosition = "57%";
+  const [horizontalPanePosition, setHorizontalPanePosition] = useState(
+    defaultHorizontalPanePosition
+  );
+
   const calculateHeight = (size) => `${(size / window.innerHeight) * 100}%`;
+  const onChangeHandler = (size) => {
+    const newHorizontalPanePosition = calculateHeight(size);
+    localStorage.setItem("splitHorizontalPosition", newHorizontalPanePosition);
+    setHorizontalPanePosition(newHorizontalPanePosition);
+  };
 
   return (
     <StyledHorizontalSplitPane
       split="horizontal"
-      defaultSize={localStorage.getItem("splitHorizontalPosition") || "57%"}
-      onChange={(size) => localStorage.setItem("splitHorizontalPosition", calculateHeight(size))}
+      defaultSize={localStorage.getItem("splitHorizontalPosition") || defaultHorizontalPanePosition}
+      onChange={_.debounce(onChangeHandler, 100)}
       pane2Style={{
         display: "grid",
         gridTemplateRows: "100%",
@@ -171,6 +182,8 @@ const Analytics = ({ sortKey }) => {
           id="my-returns-treemap"
           analytics={analytics.data}
           heatmapClickHandler={heatmapClickHandler}
+          horizontalPanePosition={horizontalPanePosition}
+          verticalPanePosition={verticalPanePosition}
         />
       )}
     </StyledHorizontalSplitPane>
@@ -178,7 +191,8 @@ const Analytics = ({ sortKey }) => {
 };
 
 Analytics.propTypes = {
-  sortKey: PropTypes.string.isRequired
+  sortKey: PropTypes.string.isRequired,
+  verticalPanePosition: PropTypes.string.isRequired
 };
 
 export default Analytics;

@@ -4,7 +4,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import { css } from "@emotion/react";
 import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-google-charts";
 import MoonLoader from "react-spinners/MoonLoader";
 import styled from "styled-components";
@@ -20,46 +20,53 @@ const ChartContainer = styled.div``;
 const options = {
   highlightOnMouseOver: true,
   maxDepth: 1,
-  maxPostDepth: 2,
+  maxPostDepth: 1,
   minHighlightColor: "#8c6bb1",
   midHighlightColor: "#9ebcda",
   maxHighlightColor: "#edf8fb",
   minColor: "#009688",
   midColor: "#f7f7f7",
   maxColor: "#ee8100",
-  headerHeight: 15,
-  showScale: true,
-  height: 500,
+  // headerHeight: 15,
+  // height: 500,
   useWeightedAverageForAggregation: true,
   generateTooltip: (row, size, value) => {
     if (row === 0) {
-      return null;
+      return "";
     }
 
     return `<div style="background:#fd9; padding:10px; border-style:solid"> row: ${row} size: ${size} val: ${value}</div>`;
   }
 };
 
-const ReturnsTreemap = ({ analytics, heatmapClickHandler }) => {
+const ReturnsTreemap = ({
+  analytics,
+  heatmapClickHandler,
+  horizontalPanePosition,
+  verticalPanePosition
+}) => {
   const clickhandler = () => {
     heatmapClickHandler("DOGE");
   };
 
   const [size, setSize] = useState({
-    width: "100%",
-    height: "100%"
+    height: "100%",
+    width: "100%"
   });
-  const chartContainerRef = useRef(null);
 
   useEffect(() => {
+    const rawHeight = horizontalPanePosition;
+    const rawWidth = verticalPanePosition;
+    const formattedHeight = parseFloat(rawHeight) / 100;
+    const formattedWidth = parseFloat(rawWidth) / 100;
+    const treemapHeight = window.innerHeight * (1 - formattedHeight);
+    const treemapWidth = window.innerWidth * (1 - formattedWidth);
+
     setSize({
-      width: `${chartContainerRef.current.clientHeight}px`,
-      height: `${chartContainerRef.current.clientWidth}px`
+      height: `${treemapHeight}px`,
+      width: `${treemapWidth}px`
     });
-  }, [
-    localStorage.getItem("splitHorizontalPosition"),
-    localStorage.getItem("splitVerticalPosition")
-  ]);
+  }, [horizontalPanePosition, verticalPanePosition]);
 
   const securities = Object.keys(analytics);
 
@@ -81,10 +88,10 @@ const ReturnsTreemap = ({ analytics, heatmapClickHandler }) => {
   //   ["LTC", "Market", 102]
   // ]}
   return (
-    <ChartContainer id="chart-container" ref={chartContainerRef}>
+    <ChartContainer id="chart-container">
       <Chart
-        width="975px"
-        height="500px"
+        width="100%"
+        height="100%"
         chartType="TreeMap"
         data={return30daySeries}
         options={options}
@@ -99,7 +106,9 @@ const ReturnsTreemap = ({ analytics, heatmapClickHandler }) => {
 ReturnsTreemap.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   analytics: PropTypes.object.isRequired,
-  heatmapClickHandler: PropTypes.func.isRequired
+  heatmapClickHandler: PropTypes.func.isRequired,
+  verticalPanePosition: PropTypes.string.isRequired,
+  horizontalPanePosition: PropTypes.string.isRequired
 };
 
 export default ReturnsTreemap;
