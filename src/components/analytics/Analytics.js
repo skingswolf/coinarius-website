@@ -9,7 +9,7 @@ import SplitPane from "react-split-pane";
 import styled from "styled-components";
 
 import Macroanalysis from "../macroanalysis/Macroanalysis";
-import Microanalysis from "../microanalysis/Microanalysis";
+import ReturnsTreemap from "../returnsTreemap/ReturnsTreemap";
 
 const StyledHorizontalSplitPane = styled(SplitPane)``;
 
@@ -141,8 +141,19 @@ const Analytics = ({ sortKey }) => {
     setAnalytics((a) => ({ ...a, scrollTo: security, scrollToCount: a.scrollToCount + 1 }));
   };
 
+  const calculateHeight = (size) => `${(size / window.innerHeight) * 100}%`;
+
   return (
-    <StyledHorizontalSplitPane split="horizontal" defaultSize="57%">
+    <StyledHorizontalSplitPane
+      split="horizontal"
+      defaultSize={localStorage.getItem("splitHorizontalPosition") || "57%"}
+      onChange={(size) => localStorage.setItem("splitHorizontalPosition", calculateHeight(size))}
+      pane2Style={{
+        display: "grid",
+        gridTemplateRows: "100%",
+        gridTemplateColumns: "100%"
+      }}
+    >
       {analytics.isLoading ? (
         <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
       ) : (
@@ -153,7 +164,15 @@ const Analytics = ({ sortKey }) => {
           scrollToCount={analytics.scrollToCount}
         />
       )}
-      <Microanalysis heatmapClickHandler={heatmapClickHandler} />
+      {analytics.isLoading ? (
+        <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
+      ) : (
+        <ReturnsTreemap
+          id="my-returns-treemap"
+          analytics={analytics.data}
+          heatmapClickHandler={heatmapClickHandler}
+        />
+      )}
     </StyledHorizontalSplitPane>
   );
 };
