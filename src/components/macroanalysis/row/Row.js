@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 // import AutocorrelationStamp from "../../stamps/autocorrelation/AutocorrelationStamp";
 // import BitcoinCorrelationStamp from "../../stamps/bitcoinCorrelation/BitcoinCorrelationStamp";
-// import MovingAverageStamp from "../../stamps/movingAverage/MovingAverageStamp";
+import PriceStamp from "../../stamps/price/PriceStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 // import RSIStamp from "../../stamps/rsi/RSIStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
@@ -47,6 +47,36 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
         security={security}
         value={lastReturn}
         data={returnTimeSeriesTail}
+        zScore={zScore}
+      />
+    );
+  }
+
+  // Price Stamp.
+  if (analyticName === "price") {
+    const numOfDays = 31;
+
+    const movingAverageTimeSeries = stampAnalytics.moving_average_30d.timeSeries;
+    const movingAverageTimeSeriesTail = movingAverageTimeSeries.slice(
+      Math.max(movingAverageTimeSeries.length - numOfDays, 1)
+    );
+    const lastMovingAverage =
+      movingAverageTimeSeriesTail[movingAverageTimeSeriesTail.length - 1][1];
+
+    const priceTimeSeries = stampAnalytics.price.timeSeries;
+    const priceTimeSeriesTail = priceTimeSeries.slice(
+      Math.max(priceTimeSeries.length - numOfDays, 1)
+    );
+    const lastPrice = priceTimeSeriesTail[priceTimeSeriesTail.length - 1][1];
+
+    return (
+      <PriceStamp
+        key={analyticName}
+        security={security}
+        price={lastPrice}
+        movingAverage={lastMovingAverage}
+        priceData={priceTimeSeriesTail}
+        movingAverageData={movingAverageTimeSeriesTail}
         zScore={zScore}
       />
     );

@@ -10,7 +10,7 @@ import styled from "styled-components";
 const PercentValue = styled.span`
   position: absolute;
   width: 100%;
-  top: 4px;
+  top: 7px;
   font-style: normal;
   font-weight: normal;
   font-size: 13px;

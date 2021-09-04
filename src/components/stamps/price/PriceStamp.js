@@ -3,9 +3,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import Chart from "../utils/Chart";
+import DoubleChart from "../utils/DoubleChart";
 import Stamp from "../Stamp";
-import { DisplayWithPercent, NoData } from "../stamps-utils";
+import { NoData } from "../stamps-utils";
 
 const Body = styled.div`
   background: #1c2024;
@@ -44,22 +44,44 @@ const LineChart = styled.div`
   display: flex;
 `;
 
+const Price = styled.span`
+  position: absolute;
+  width: 100%;
+  top: 7px;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 20px;
+  text-align: center;
+`;
+
 /**
  * @visibleName Performance-Stamp
  */
-const PerformanceStamp = ({ security, value, data, isNoData, zScore }) => {
-  const tooltipText = "Dummy tooltip text placeholder";
+const PriceStamp = ({
+  security,
+  price,
+  movingAverage,
+  priceData,
+  movingAverageData,
+  isNoData,
+  zScore
+}) => {
+  const numDecimalPlaces = price < 1 ? 4 : 2;
+  const roundedPrice = price.toFixed(numDecimalPlaces);
+  const roundedMovingAverage = movingAverage.toFixed(numDecimalPlaces);
+  const tooltipText = `Last Price: ${roundedPrice}, Last 30 Day Moving Average: ${roundedMovingAverage}`;
 
   return (
-    <Stamp security={security} title="Performance" zScore={zScore} tooltipText={tooltipText}>
+    <Stamp security={security} title="Price" zScore={zScore} tooltipText={tooltipText}>
       <Body>
         {isNoData ? (
           <NoData />
         ) : (
           <>
-            <DisplayWithPercent value={value} />
+            <Price>{`$${roundedPrice}`}</Price>
             <LineChart>
-              <Chart data={data} title="Performamce stamp" />
+              <DoubleChart data={priceData} otherData={movingAverageData} title="Price Stamp" />
               <ChartSegment>
                 <ChartBackground />
               </ChartSegment>
@@ -77,16 +99,18 @@ const PerformanceStamp = ({ security, value, data, isNoData, zScore }) => {
   );
 };
 
-PerformanceStamp.defaultProps = {
+PriceStamp.defaultProps = {
   isNoData: false
 };
 
-PerformanceStamp.propTypes = {
+PriceStamp.propTypes = {
   security: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
-  data: PropTypes.array.isRequired,
+  price: PropTypes.number.isRequired,
+  movingAverage: PropTypes.number.isRequired,
+  priceData: PropTypes.array.isRequired,
+  movingAverageData: PropTypes.array.isRequired,
   isNoData: PropTypes.bool,
   zScore: PropTypes.number.isRequired
 };
 
-export default PerformanceStamp;
+export default PriceStamp;
