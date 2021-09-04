@@ -48,7 +48,8 @@ const LineChart = styled.div`
  * @visibleName Performance-Stamp
  */
 const PerformanceStamp = ({ security, value, data, isNoData, zScore }) => {
-  const tooltipText = "Dummy tooltip text placeholder";
+  const roundedReturn = value.toPrecision(3);
+  const tooltipText = `Last Daily Return: ${roundedReturn}%`;
 
   return (
     <Stamp security={security} title="Performance" zScore={zScore} tooltipText={tooltipText}>
