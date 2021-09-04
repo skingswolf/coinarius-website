@@ -29,7 +29,7 @@ const SecurityName = styled.div`
 const Stamps = styled.div`
   border: 1px blue solid;
   display: inline-flex;
-  justify-content: center;
+  justify-content: space-evenly;
 `;
 
 const createStamp = (security, analyticName, zScore, stampAnalytics) => {
