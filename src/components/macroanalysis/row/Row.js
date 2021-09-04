@@ -3,9 +3,8 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-// import AutocorrelationStamp from "../../stamps/autocorrelation/AutocorrelationStamp";
+import CorrelationStamp from "../../stamps/correlation/CorrelationStamp";
 import PriceStamp from "../../stamps/price/PriceStamp";
-import PriceMomentumStamp from "../../stamps/priceMomentum/PriceMomentumStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 import RsiStamp from "../../stamps/rsi/RsiStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
@@ -83,26 +82,6 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
     );
   }
 
-  // Price Momentum Stamp.
-  if (analyticName === "price_diff") {
-    const priceDiffTimeSeries = stampAnalytics.price_diff.timeSeries;
-    const priceDiffNumOfDays = 31;
-    const priceDiffTimeSeriesTail = priceDiffTimeSeries.slice(
-      Math.max(priceDiffTimeSeries.length - priceDiffNumOfDays, 1)
-    );
-    const lastPriceDiff = priceDiffTimeSeriesTail[priceDiffTimeSeriesTail.length - 1][1];
-
-    return (
-      <PriceMomentumStamp
-        key={analyticName}
-        security={security}
-        value={lastPriceDiff}
-        data={priceDiffTimeSeriesTail}
-        zScore={zScore}
-      />
-    );
-  }
-
   // RSI Stamp.
   if (analyticName === "rsi") {
     const rsiTimeSeries = stampAnalytics.rsi.timeSeries;
@@ -162,6 +141,33 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
     );
   }
 
+  // Correlation Stamp.
+  if (analyticName === "correlation") {
+    const autocorrelationTimeSeries = stampAnalytics.autocorrelation.timeSeries;
+    const lastAutocorrelation = autocorrelationTimeSeries[autocorrelationTimeSeries.length - 1][1];
+
+    const btcCorrelationTimeSeries = stampAnalytics.btc_correlation.timeSeries;
+    const lastBtcCorrelation = btcCorrelationTimeSeries[btcCorrelationTimeSeries.length - 1][1];
+
+    const ethCorrelationTimeSeries = stampAnalytics.eth_correlation.timeSeries;
+    const lastEthCorrelation = ethCorrelationTimeSeries[ethCorrelationTimeSeries.length - 1][1];
+
+    // Change this later to use rolling correlation z-scores.
+    const correlationZScore =
+      1.96 * ((lastAutocorrelation + lastBtcCorrelation + lastEthCorrelation) / 3);
+
+    return (
+      <CorrelationStamp
+        key={analyticName}
+        security={security}
+        autocorrelation={lastAutocorrelation}
+        btcCorrelation={lastBtcCorrelation}
+        ethCorrelation={lastEthCorrelation}
+        zScore={correlationZScore}
+      />
+    );
+  }
+
   return <div key={analyticName}>{analyticName}</div>;
 };
 
@@ -175,7 +181,8 @@ const Row = React.forwardRef(({ security, analytics }, ref) => {
     "return_30d",
     "name",
     "totalZScore",
-    "moving_average_30d"
+    "moving_average_30d",
+    "price_diff"
   ];
 
   const stampAnalytics = [{ analyticName: "correlation", zScore: 0 }];
@@ -203,10 +210,6 @@ const Row = React.forwardRef(({ security, analytics }, ref) => {
         {stampAnalytics.map(({ analyticName, zScore }) =>
           createStamp(security, analyticName, zScore, analytics[security])
         )}
-        {/* <AutocorrelationStamp value={-0.5} data={series} />
-        <MovingAverageStamp value={1.3} data={series} />
-        <BitcoinCorrelationStamp value={0.77} data={series} />
-        <RSIStamp value={2.69} data={series} /> */}
       </Stamps>
     </Body>
   );
