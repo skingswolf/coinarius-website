@@ -2,9 +2,10 @@
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
+import _ from "lodash";
 import { css } from "@emotion/react";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useLayoutEffect } from "react";
 import Chart from "react-google-charts";
 import MoonLoader from "react-spinners/MoonLoader";
 import styled from "styled-components";
@@ -39,6 +40,21 @@ const options = {
   }
 };
 
+// Taken from Stackoverflow
+function useWindowSize() {
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
+  useLayoutEffect(() => {
+    const updateSize = () => {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener("resize", _.debounce(updateSize, 100));
+    updateSize();
+    return () => window.removeEventListener("resize", updateSize);
+  }, []);
+  return windowSize;
+}
+
 const ReturnsTreemap = ({
   analytics,
   heatmapClickHandler,
@@ -49,25 +65,14 @@ const ReturnsTreemap = ({
     heatmapClickHandler("DOGE");
   };
 
-  const [size, setSize] = useState({
-    height: "100%",
-    width: "100%"
-  });
-
+  // Effect hook used to force a chart re-render on
+  // changes to the horizontal and vertical panel positioning.
+  // Approach taken from Stackoverflow
+  const windowSize = useWindowSize();
+  const [key, setkey] = useState(false);
   useEffect(() => {
-    const rawHeight = horizontalPanePosition;
-    const rawWidth = verticalPanePosition;
-    const formattedHeight = parseFloat(rawHeight) / 100;
-    const formattedWidth = parseFloat(rawWidth) / 100;
-    const treemapHeight = window.innerHeight * (1 - formattedHeight);
-    const treemapWidth = window.innerWidth * (1 - formattedWidth);
-
-    setSize({
-      height: `${treemapHeight}px`,
-      width: `${treemapWidth}px`
-    });
-  }, [horizontalPanePosition, verticalPanePosition]);
-
+    setkey((prevKey) => !prevKey);
+  }, [horizontalPanePosition, verticalPanePosition, windowSize.width, windowSize.height]);
   const securities = Object.keys(analytics);
 
   const return30daySeries = securities.map((security) => {
@@ -79,17 +84,11 @@ const ReturnsTreemap = ({
 
   return30daySeries.unshift(["Market", null, 0, 0]);
   return30daySeries.unshift(["Security", "Parent", "Abs, Return", "Return"]);
-
-  // data={[
-  //   ["Security", "Parent", "Abs, Return"],
-  //   ["Market", null, 0],
-  //   ["BTC", "Market", 170],
-  //   ["ETH", "Market", 104],
-  //   ["LTC", "Market", 102]
   // ]}
   return (
     <ChartContainer id="chart-container">
       <Chart
+        key={key}
         width="100%"
         height="100%"
         chartType="TreeMap"
