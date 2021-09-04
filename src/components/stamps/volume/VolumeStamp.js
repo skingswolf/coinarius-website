@@ -89,7 +89,7 @@ const VolumeStamp = ({ security, value, data, isNoData, zScore }) => {
         ) : (
           <>
             <Volume>{figure}</Volume>
-            <SubTitle>30d AVG</SubTitle>
+            <SubTitle>Today</SubTitle>
             <BarChartContainer>
               <BarChart data={data} title="Volume stamp" />
             </BarChartContainer>
