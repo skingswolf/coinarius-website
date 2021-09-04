@@ -32,7 +32,7 @@ const options = {
       return "";
     }
 
-    return `<div style="background:#fd9; padding:10px; border-style:solid"> 30 Day Return: ${size}% </div>`;
+    return `<div style="background:#fd9; padding:10px; border-style:solid"> Monthly Return: ${size}% </div>`;
   },
   eventsConfig: {
     drilldown: [], // Disable drilldowns.
