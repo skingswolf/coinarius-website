@@ -63,22 +63,22 @@ const VolumeMomentumStamp = ({ security, value, data, isNoData, zScore }) => {
   const million = 1000000;
   const billion = 1000000000;
   let units = "";
-  let roundedVolumeChange = value.toPrecision(3);
-  const absRoundedVolumeChange = Math.abs(roundedVolumeChange);
+  let volumeChange = Math.abs(value);
 
-  if (absRoundedVolumeChange % billion > 1) {
+  if (volumeChange % billion > 1) {
     units = "b";
-    roundedVolumeChange /= billion;
-  } else if (absRoundedVolumeChange % million > 1) {
+    volumeChange = value / billion;
+  } else if (volumeChange % million > 1) {
     units = "m";
-    roundedVolumeChange /= million;
+    volumeChange = value / million;
   }
 
-  const sign = roundedVolumeChange > 0 ? "+" : roundedVolumeChange < 0 ? "-" : "";
-  const phrasing = roundedVolumeChange > 0 ? "more" : roundedVolumeChange < 0 ? "fewer" : "";
-  const tooltipText = `$${Math.abs(
-    roundedVolumeChange
-  )}${units} ${phrasing} traded in ${security} than in the previous day`;
+  volumeChange = volumeChange.toPrecision(3);
+  const absRoundedVolumeChange = Math.abs(volumeChange);
+
+  const sign = volumeChange > 0 ? "+" : volumeChange < 0 ? "-" : "";
+  const phrasing = volumeChange > 0 ? "more" : volumeChange < 0 ? "fewer" : "";
+  const tooltipText = `$${absRoundedVolumeChange}${units} ${phrasing} traded in ${security} than in the previous day`;
 
   return (
     <Stamp security={security} title="Vol. Momentum" zScore={zScore} tooltipText={tooltipText}>
@@ -87,7 +87,7 @@ const VolumeMomentumStamp = ({ security, value, data, isNoData, zScore }) => {
           <NoData />
         ) : (
           <>
-            <VolumeMomentum>{`${sign}$${Math.abs(roundedVolumeChange)}${units}`}</VolumeMomentum>
+            <VolumeMomentum>{`${sign}$${absRoundedVolumeChange}${units}`}</VolumeMomentum>
             <LineChart>
               <Chart data={data} title="Volume Momentum Stamp" />
               <ChartSegment>
