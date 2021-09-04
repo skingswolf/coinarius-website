@@ -56,7 +56,7 @@ const Price = styled.span`
 `;
 
 /**
- * @visibleName Performance-Stamp
+ * @visibleName Price-Stamp
  */
 const PriceStamp = ({
   security,

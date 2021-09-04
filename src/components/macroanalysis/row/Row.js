@@ -7,7 +7,7 @@ import styled from "styled-components";
 // import BitcoinCorrelationStamp from "../../stamps/bitcoinCorrelation/BitcoinCorrelationStamp";
 import PriceStamp from "../../stamps/price/PriceStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
-// import RSIStamp from "../../stamps/rsi/RSIStamp";
+import RsiStamp from "../../stamps/rsi/RsiStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
 
 const Body = styled.div`
@@ -77,6 +77,24 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
         movingAverage={lastMovingAverage}
         priceData={priceTimeSeriesTail}
         movingAverageData={movingAverageTimeSeriesTail}
+        zScore={zScore}
+      />
+    );
+  }
+
+  // RSI Stamp.
+  if (analyticName === "rsi") {
+    const rsiTimeSeries = stampAnalytics.rsi.timeSeries;
+    const rsiNumOfDays = 31;
+    const rsiTimeSeriesTail = rsiTimeSeries.slice(Math.max(rsiTimeSeries.length - rsiNumOfDays, 1));
+    const lastRsi = rsiTimeSeriesTail[rsiTimeSeriesTail.length - 1][1];
+
+    return (
+      <RsiStamp
+        key={analyticName}
+        security={security}
+        value={lastRsi}
+        data={rsiTimeSeriesTail}
         zScore={zScore}
       />
     );

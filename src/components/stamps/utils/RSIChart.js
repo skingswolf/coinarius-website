@@ -2,67 +2,80 @@
 /* eslint-disable react/jsx-one-expression-per-line */
 import React from "react";
 import { scaleTime, scaleLinear } from "d3-scale";
-import { max as d3Max, min as d3Min } from "d3-array";
-import { line as d3Line, area as d3Area } from "d3-shape";
+import { line as d3Line } from "d3-shape";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
-const SvgComponent = styled.svg`
+const SVGComponent = styled.svg`
   position: absolute;
   top: 0;
 `;
 
-const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth, fillColour }) => {
+const DoubleChart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth }) => {
   if (!data || !data.length) {
     return null;
   }
 
   const chartLineMargin = 1;
-  const values = data.map((elem) => elem.value);
+
+  const lowerBoundaryData = data.map((elem) => [elem[0], 30]);
+  const upperBoundaryData = data.map((elem) => [elem[0], 70]);
 
   const xScale = scaleTime()
-    .domain([new Date(data[0].time), new Date(data[data.length - 1].time)])
+    .domain([new Date(data[0][0]), new Date(data[data.length - 1][0])])
     .range([chartLineMargin, chartWidth - chartLineMargin - 1]);
 
   const yScale = scaleLinear()
-    .domain([d3Min(values), d3Max(values)])
+    .domain([0, 100])
     .range([chartHeight - chartLineMargin, chartLineMargin]);
 
   const path = d3Line()
-    .x((elem) => xScale(new Date(elem.time)))
-    .y((elem) => yScale(elem.value))(data);
+    .x((elem) => xScale(new Date(elem[0])))
+    .y((elem) => yScale(elem[1]))(data);
 
-  const areaPath = d3Area()
-    .x((elem) => xScale(new Date(elem.time)))
-    .y0(yScale(0))
-    .y1((elem) => yScale(elem.value))(data);
+  const lowerBoundaryPath = d3Line()
+    .x((elem) => xScale(new Date(elem[0])))
+    .y((elem) => yScale(elem[1]))(lowerBoundaryData);
+
+  const upperBoundaryPath = d3Line()
+    .x((elem) => xScale(new Date(elem[0])))
+    .y((elem) => yScale(elem[1]))(upperBoundaryData);
 
   return (
-    <SvgComponent height={chartHeight} width="100%" role="img" title={title}>
+    <SVGComponent height={chartHeight} width="100%" role="img" title={title}>
       <g transform="translate(0,0)" fill="transparent">
         <path stroke={strokeColour} strokeWidth={strokeWidth} d={path} />
-        {fillColour ? <path d={areaPath} fill={fillColour} /> : null}
+        <path
+          stroke="orange"
+          strokeDasharray="3, 3"
+          strokeWidth={strokeWidth}
+          d={lowerBoundaryPath}
+        />
+        <path
+          stroke="orange"
+          strokeDasharray="3, 3"
+          strokeWidth={strokeWidth}
+          d={upperBoundaryPath}
+        />
       </g>
-    </SvgComponent>
+    </SVGComponent>
   );
 };
 
-Chart.defaultProps = {
-  chartHeight: 45,
+DoubleChart.defaultProps = {
+  chartHeight: 54,
   chartWidth: 102,
   strokeColour: "blue",
-  strokeWidth: 1,
-  fillColour: null
+  strokeWidth: 1
 };
 
-Chart.propTypes = {
+DoubleChart.propTypes = {
   data: PropTypes.array.isRequired,
   title: PropTypes.string.isRequired,
   chartHeight: PropTypes.number,
   chartWidth: PropTypes.number,
   strokeWidth: PropTypes.number,
-  strokeColour: PropTypes.string,
-  fillColour: PropTypes.string
+  strokeColour: PropTypes.string
 };
 
-export default Chart;
+export default DoubleChart;
