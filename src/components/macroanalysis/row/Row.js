@@ -6,6 +6,7 @@ import styled from "styled-components";
 // import AutocorrelationStamp from "../../stamps/autocorrelation/AutocorrelationStamp";
 // import BitcoinCorrelationStamp from "../../stamps/bitcoinCorrelation/BitcoinCorrelationStamp";
 import PriceStamp from "../../stamps/price/PriceStamp";
+import PriceMomentumStamp from "../../stamps/priceMomentum/PriceMomentumStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 import RsiStamp from "../../stamps/rsi/RsiStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
@@ -82,6 +83,26 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
     );
   }
 
+  // Price Momentum Stamp.
+  if (analyticName === "price_diff") {
+    const priceDiffTimeSeries = stampAnalytics.price_diff.timeSeries;
+    const priceDiffNumOfDays = 31;
+    const priceDiffTimeSeriesTail = priceDiffTimeSeries.slice(
+      Math.max(priceDiffTimeSeries.length - priceDiffNumOfDays, 1)
+    );
+    const lastPriceDiff = priceDiffTimeSeriesTail[priceDiffTimeSeriesTail.length - 1][1];
+
+    return (
+      <PriceMomentumStamp
+        key={analyticName}
+        security={security}
+        value={lastPriceDiff}
+        data={priceDiffTimeSeriesTail}
+        zScore={zScore}
+      />
+    );
+  }
+
   // RSI Stamp.
   if (analyticName === "rsi") {
     const rsiTimeSeries = stampAnalytics.rsi.timeSeries;
@@ -121,7 +142,7 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
     );
   }
 
-  return <div key={analyticName}>Unknown Stamp</div>;
+  return <div key={analyticName}>{analyticName}</div>;
 };
 
 const Row = React.forwardRef(({ security, analytics }, ref) => {
@@ -131,10 +152,10 @@ const Row = React.forwardRef(({ security, analytics }, ref) => {
     "btc_correlation",
     "eth_correlation",
     "market_cap",
-    "price_diff",
     "return_30d",
     "name",
-    "totalZScore"
+    "totalZScore",
+    "moving_average_30d"
   ];
 
   const stampAnalytics = [{ analyticName: "correlation", zScore: 0 }];
