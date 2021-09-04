@@ -5,7 +5,7 @@ import { css } from "@emotion/react";
 import io from "socket.io-client";
 import MoonLoader from "react-spinners/MoonLoader";
 import PropTypes from "prop-types";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
 
@@ -138,10 +138,6 @@ const Analytics = ({ sortKey, verticalPanePosition }) => {
     };
   }, []);
 
-  const heatmapClickHandler = (security) => {
-    setAnalytics((a) => ({ ...a, scrollTo: security, scrollToCount: a.scrollToCount + 1 }));
-  };
-
   const defaultHorizontalPanePosition = "57%";
   const [horizontalPanePosition, setHorizontalPanePosition] = useState(
     defaultHorizontalPanePosition
@@ -153,6 +149,19 @@ const Analytics = ({ sortKey, verticalPanePosition }) => {
     localStorage.setItem("splitHorizontalPosition", newHorizontalPanePosition);
     setHorizontalPanePosition(newHorizontalPanePosition);
   };
+
+  const treemapClickHandler = (security) => {
+    console.log(`Scrolling to: ${security}`);
+    setAnalytics((a) => ({ ...a, scrollTo: security, scrollToCount: a.scrollToCount + 1 }));
+  };
+  const debouncedChangeHandler = useMemo(() => _.debounce(treemapClickHandler, 300), []);
+
+  // After unmounting stop invoking `debouncedChangeHandler`.
+  useEffect(() => {
+    return () => {
+      debouncedChangeHandler.cancel();
+    };
+  }, []);
 
   return (
     <StyledHorizontalSplitPane
@@ -181,7 +190,7 @@ const Analytics = ({ sortKey, verticalPanePosition }) => {
         <ReturnsTreemap
           id="my-returns-treemap"
           analytics={analytics.data}
-          heatmapClickHandler={heatmapClickHandler}
+          treemapClickHandler={debouncedChangeHandler}
           horizontalPanePosition={horizontalPanePosition}
           verticalPanePosition={verticalPanePosition}
         />
