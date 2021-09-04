@@ -1,13 +1,8 @@
 import { css } from "@emotion/react";
 import MoonLoader from "react-spinners/MoonLoader";
 import React, { useEffect, useState } from "react";
+import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
-
-const StyledNewsStory = styled.div`
-  border: red solid 1px;
-  margin: 15px 15px 0 15px;
-  padding: 15px;
-`;
 
 const loaderOverride = css`
   display: block;
@@ -15,18 +10,85 @@ const loaderOverride = css`
   border-color: red;
 `;
 
+const StyledNewsStory = styled.div`
+  border: red solid 1px;
+  margin: 15px 15px 0 15px;
+  padding: 13px;
+  max-width: 1000px;
+`;
+
+const StyledNewsStoryTitle = styled.a`
+  // max-width: 900px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  color: black;
+  text-decoration: none;
+  &:hover {
+    color: black;
+    text-decoration: none;
+  },
+  line-height: 20px;
+`;
+
+const StyledNewsStoryContainer = styled.div`
+  display: grid;
+  grid-template-rows: 40% 60%;
+  grid-template-columns: 100%;
+`;
+
+const StyledNewsTitleContainer = styled.div`
+  display: grid;
+  grid-template-columns: 80% 20%;
+  grid-template-rows: 100%;
+  justify-self: stretch;
+`;
+
+const StyledNewsStoryTopicContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-self: flex-end;
+`;
+
+const StyledNewsStoryTopic = styled.span`
+  border: 1px red solid;
+  font-size: 14px;
+`;
+
+const StyledNewsStoryDate = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-self: flex-start;
+`;
+
 const getNewsfeedItems = (newsStories) => {
-  return newsStories.map((newsStory) => (
-    <StyledNewsStory key={newsStory.title + Date.now()}>
-      <div>
-        <div>{newsStory.title}</div>
-        <div>
-          <span>{newsStory.publisher}</span>
-          <span>{newsStory.time}</span>
-        </div>
-      </div>
-    </StyledNewsStory>
-  ));
+  return newsStories.map((newsStory) => {
+    const newsStoryId = newsStory.title + Date.now();
+    const topics = newsStory.topics.map((topic, index) => (
+      // eslint-disable-next-line react/no-array-index-key
+      <StyledNewsStoryTopic key={`${topic}-${index}`}>{topic}</StyledNewsStoryTopic>
+    ));
+
+    return (
+      <StyledNewsStory key={newsStoryId} data-tip data-for={newsStoryId}>
+        <StyledNewsStoryContainer>
+          <StyledNewsTitleContainer>
+            <StyledNewsStoryTitle href={newsStory.url} target="_blank" rel="noopener noreferrer">
+              {newsStory.title}
+            </StyledNewsStoryTitle>
+            <StyledNewsStoryDate>{newsStory.date.substring(0, 5)}</StyledNewsStoryDate>
+          </StyledNewsTitleContainer>
+
+          <StyledNewsStoryTopicContainer>{topics}</StyledNewsStoryTopicContainer>
+        </StyledNewsStoryContainer>
+        <ReactTooltip id={newsStoryId} aria-haspopup="true">
+          {newsStory.title}
+        </ReactTooltip>
+      </StyledNewsStory>
+    );
+  });
 };
 
 const nlpAnalyticsUrl = "https://coinarius-nlp.herokuapp.com";
