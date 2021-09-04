@@ -65,8 +65,6 @@ const BarChartFooter = styled.div`
  * @visibleName Volume-Stamp
  */
 const VolumeStamp = ({ security, value, data, isNoData, zScore }) => {
-  const tooltipText = "Dummy tooltip text placeholder";
-
   const million = 1000000;
   const billion = 1000000000;
   let roundedValue = value.toPrecision(3);
@@ -81,6 +79,7 @@ const VolumeStamp = ({ security, value, data, isNoData, zScore }) => {
   }
 
   const figure = `$${roundedValue}${units}`;
+  const tooltipText = `${figure} worth of ${security} have traded in the last 24 hours`;
 
   return (
     <Stamp security={security} title="Volume" zScore={zScore} tooltipText={tooltipText}>

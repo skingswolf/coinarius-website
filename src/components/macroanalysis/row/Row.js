@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 
 // import AutocorrelationStamp from "../../stamps/autocorrelation/AutocorrelationStamp";
-// import BitcoinCorrelationStamp from "../../stamps/bitcoinCorrelation/BitcoinCorrelationStamp";
 import PriceStamp from "../../stamps/price/PriceStamp";
 import PriceMomentumStamp from "../../stamps/priceMomentum/PriceMomentumStamp";
 import PerformanceStamp from "../../stamps/performance/PerformanceStamp";
 import RsiStamp from "../../stamps/rsi/RsiStamp";
 import VolumeStamp from "../../stamps/volume/VolumeStamp";
+import VolumeMomentumStamp from "../../stamps/volumeMomentum/VolumeMomentumStamp";
 
 const Body = styled.div`
   width: 100%;
@@ -137,6 +137,26 @@ const createStamp = (security, analyticName, zScore, stampAnalytics) => {
         security={security}
         value={lastVolume}
         data={volumes}
+        zScore={zScore}
+      />
+    );
+  }
+
+  // Volume Momentum Stamp.
+  if (analyticName === "volume_diff") {
+    const volumeDiffTimeSeries = stampAnalytics.volume_diff.timeSeries;
+    const volumeDiffNumOfDays = 31;
+    const volumeDiffTimeSeriesTail = volumeDiffTimeSeries.slice(
+      Math.max(volumeDiffTimeSeries.length - volumeDiffNumOfDays, 1)
+    );
+    const lastVolumeDiff = volumeDiffTimeSeriesTail[volumeDiffTimeSeriesTail.length - 1][1];
+
+    return (
+      <VolumeMomentumStamp
+        key={analyticName}
+        security={security}
+        value={lastVolumeDiff}
+        data={volumeDiffTimeSeriesTail}
         zScore={zScore}
       />
     );
