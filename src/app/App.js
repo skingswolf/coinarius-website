@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 
 import LandingPage from "../components/landingPage/LandingPage";
 
-const { Header, Content, Footer } = Layout;
+const { Header, Content } = Layout;
 
 const StyledLayout = styled(Layout)`
   min-height: 100vh;
@@ -34,11 +34,6 @@ const StyledLoaderContainer = styled.div`
   height: 100%;
 `;
 const StyledLoader = styled(Loader)``;
-const StyledFooter = styled(Footer)`
-  text-align: center;
-  border-top: 1px solid #000;
-  padding: 10px 50px;
-`;
 
 const StyledHeaderLabel = styled.div`
   display: flex;
@@ -103,7 +98,6 @@ const App = () => {
       <StyledContent>
         {isLoading ? loaderContainer : <LandingPage sortKey={sortKey} />}
       </StyledContent>
-      <StyledFooter>Coinarius ©2020 Created by Steven Kingaby</StyledFooter>
     </StyledLayout>
   );
 };
