@@ -29,7 +29,7 @@ const LandingPage = ({ sortKey }) => {
       defaultSize={defaultVerticalPanePosition}
       onChange={_.debounce(onChangeHandler, 100)}
       pane1Style={{
-        "overflow-y": "auto"
+        overflowY: "auto"
       }}
     >
       <Newsfeed />

@@ -23,7 +23,7 @@ const StyledHeader = styled(Header)`
   border-bottom: 1px solid black;
   display: grid;
   grid-template-rows: 100%;
-  grid-template-columns: 25% 50% 25%;
+  grid-template-columns: 25% 55% 20%;
   background-color: rgba(0, 0, 0, 0.4);
 `;
 const StyledContent = styled(Content)`
@@ -50,9 +50,9 @@ const StyledHeaderLabel = styled.div`
 const StyledSwitchContainer = styled.div`
   display: grid;
   grid-template-rows: 100%;
-  grid-template-columns: 47% 53%;
+  grid-template-columns: 46% 54%;
   align-items: center;
-  justify-content: space-around;
+  justify-content: start;
 `;
 const StyledSortByLabel = styled.div`
   display: flex;
