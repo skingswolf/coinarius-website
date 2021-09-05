@@ -40,12 +40,11 @@ const StyledLoaderContainer = styled.div`
 const StyledLoader = styled(Loader)``;
 
 const StyledHeaderLabel = styled.div`
-  display: flex;
   color: white;
   align-items: center;
-  justify-content: center;
   font-weight: bolder;
   font-size: 40px;
+  margin-left: 52px;
 `;
 
 const StyledSwitchContainer = styled.div`

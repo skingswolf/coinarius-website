@@ -24,7 +24,7 @@ const SecurityName = styled.div`
   justify-content: center;
   font-size: 25px;
   font-weight: bolder;
-  color: black;
+  color: rgb(204, 204, 204);
 `;
 
 const Stamps = styled.div`
