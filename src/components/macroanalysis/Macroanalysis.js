@@ -48,6 +48,10 @@ const Macroanalysis = ({ analytics, sortKey, scrollTo, scrollToCount }) => {
       return;
     }
 
+    if (refs[scrollTo].current === undefined || refs[scrollTo].current === null) {
+      return;
+    }
+
     refs[scrollTo].current.scrollIntoView({ behavior: "smooth" });
   };
 
