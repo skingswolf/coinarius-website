@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -7,32 +6,50 @@ import { css } from "@emotion/react";
 import PropTypes from "prop-types";
 import React, { useEffect, useState, useLayoutEffect } from "react";
 import Chart from "react-google-charts";
-import MoonLoader from "react-spinners/MoonLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import styled from "styled-components";
+import {
+  synthLightRedOne,
+  synthLightRedTwo,
+  synthRedInBetween,
+  synthLightGreenOne,
+  synthLightGreenTwo,
+  synthGreenInBetween,
+  lightestGreyColour,
+  synthPurple
+} from "../../colourScheme";
 
 const loaderOverride = css`
   display: block;
-  margin: 0 auto;
-  border-color: red;
+`;
+const SpinnerLoaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const ChartContainer = styled.div``;
 
 const options = {
   highlightOnMouseOver: true,
-  minHighlightColor: "#8c6bb1",
-  midHighlightColor: "#9ebcda",
-  maxHighlightColor: "#edf8fb",
-  minColor: "#009688",
+  minHighlightColor: "#f7f7f7",
+  midHighlightColor: "#f7f7f7",
+  maxHighlightColor: "#f7f7f7",
+  minColor: "#f7f7f7",
   midColor: "#f7f7f7",
-  maxColor: "#ee8100",
+  maxColor: "#f7f7f7",
+  headerColor: `${lightestGreyColour}`,
   useWeightedAverageForAggregation: true,
+  fontSize: 15,
+  // eslint-disable-next-line no-unused-vars
   generateTooltip: (row, size, value) => {
     if (row === 0) {
       return "";
     }
 
-    return `<div style="background:#fd9; padding:10px; border-style:solid"> Monthly Return: ${size}% </div>`;
+    return `<div style="font-size: 12px; background:#fd9; padding:10px; border-style:solid"> Monthly Return: ${size}% </div>`;
   },
   eventsConfig: {
     drilldown: [], // Disable drilldowns.
@@ -72,9 +89,20 @@ const ReturnsTreemap = ({
   }, [horizontalPanePosition, verticalPanePosition, windowSize.width, windowSize.height]);
   const securities = Object.keys(analytics);
 
+  let maxReturn = 0;
+  let minReturn = 0;
+
   const return30daySeries = securities.map((security) => {
     const { timeSeries } = analytics[security].return_30d;
-    const return30day = parseFloat(timeSeries[timeSeries.length - 1][1]).toFixed(2);
+    const return30day = parseFloat(timeSeries[timeSeries.length - 1][1].toFixed(2));
+
+    if (maxReturn < return30day) {
+      maxReturn = return30day;
+    }
+
+    if (minReturn > return30day) {
+      minReturn = return30day;
+    }
 
     return [security, "Monthly Returns", Math.abs(return30day), return30day];
   });
@@ -84,6 +112,7 @@ const ReturnsTreemap = ({
 
   let previousSecurity = "";
   const treemapNodeClickHandler = (e) => {
+    // eslint-disable-next-line no-unused-vars
     const { row, column } = e;
     const security = securities[row - 1];
 
@@ -95,6 +124,28 @@ const ReturnsTreemap = ({
     previousSecurity = security;
   };
 
+  let minColour = "";
+  let midColour = "";
+  let maxColour = "";
+
+  if (minReturn <= 0 && maxReturn <= 0) {
+    minColour = `${synthLightRedOne}`;
+    midColour = `${synthRedInBetween}`;
+    maxColour = `${synthLightRedTwo}`;
+  } else if (minReturn >= 0 && maxReturn >= 0) {
+    minColour = `${synthLightGreenOne}`;
+    midColour = `${synthGreenInBetween}`;
+    maxColour = `${synthLightGreenTwo}`;
+  } else {
+    minColour = `${synthLightRedOne}`;
+    midColour = "#f7f7f7";
+    maxColour = `${synthLightGreenTwo}`;
+  }
+
+  options.minColor = minColour;
+  options.midColor = midColour;
+  options.maxColor = maxColour;
+
   return (
     <ChartContainer id="chart-container">
       <Chart
@@ -105,7 +156,15 @@ const ReturnsTreemap = ({
         data={return30daySeries}
         options={options}
         loader={
-          <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
+          // eslint-disable-next-line react/jsx-wrap-multilines
+          <SpinnerLoaderContainer>
+            <BounceLoader
+              color={synthPurple}
+              loading={analytics.isLoading}
+              css={loaderOverride}
+              size={90}
+            />
+          </SpinnerLoaderContainer>
         }
         chartEvents={[
           {

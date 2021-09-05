@@ -6,6 +6,7 @@ import { max as d3Max, min as d3Min } from "d3-array";
 import { line as d3Line, area as d3Area } from "d3-shape";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import { synthPurple } from "../../../colourScheme";
 
 const SVGComponent = styled.svg`
   position: absolute;
@@ -52,7 +53,7 @@ const Chart = ({ data, title, chartHeight, chartWidth, strokeColour, strokeWidth
 Chart.defaultProps = {
   chartHeight: 54,
   chartWidth: 102,
-  strokeColour: "blue",
+  strokeColour: synthPurple,
   strokeWidth: 1,
   fillColour: null
 };

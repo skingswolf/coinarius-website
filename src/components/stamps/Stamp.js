@@ -2,6 +2,12 @@ import React from "react";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+import {
+  synthLightRedOne,
+  synthLightRedTwo,
+  synthLightGreenOne,
+  synthLightGreenTwo
+} from "../../colourScheme";
 
 const significanceLevel = 0.5;
 const Border = styled.div`
@@ -10,17 +16,16 @@ const Border = styled.div`
   height: 120px;
   background: ${(props) => {
     if (props.zScore >= significanceLevel) {
-      return "linear-gradient(242.74deg, #98d757 0.56%, #0b5946 100%)";
+      return `linear-gradient(242.74deg, ${synthLightGreenOne} 0.56%, ${synthLightGreenTwo} 100%)`;
     }
 
     if (props.zScore <= -1 * significanceLevel) {
-      return "linear-gradient(45deg, #8f151c 0%, #ed326a 100%)";
+      return `linear-gradient(45deg, ${synthLightRedOne} 0%, ${synthLightRedTwo} 100%)`;
     }
 
     return "#1c2024";
   }};
-  // border-color: transparent;
-  border: 1px solid #2f3135;
+  border: 1px solid black;
   border-radius: 4px;
   margin-right: 7px;
 `;
@@ -31,7 +36,7 @@ const Title = styled.span`
   top: calc(50% - 20px / 2 - 48px);
   font-size: 12px;
   font-style: normal;
-  font-weight: normal;
+  font-weight: bold;
   line-height: 20px;
   text-align: center;
   color: #ffffff;

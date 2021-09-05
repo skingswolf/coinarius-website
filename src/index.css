@@ -20,7 +20,7 @@ code {
 }
 
 .Resizer {
-  background: #000;
+  background: white;
   opacity: 0.2;
   z-index: 1;
   -moz-box-sizing: border-box;
@@ -39,8 +39,8 @@ code {
 .Resizer.horizontal {
   height: 11px;
   margin: -5px 0;
-  border-top: 5px solid rgba(255, 255, 255, 0);
-  border-bottom: 5px solid rgba(255, 255, 255, 0);
+  border-top: 5px solid #919191;
+  border-bottom: 5px solid #919191;
   cursor: row-resize;
   width: 100%;
 }
@@ -53,8 +53,8 @@ code {
 .Resizer.vertical {
   width: 11px;
   margin: 0 -5px;
-  border-left: 5px solid rgba(255, 255, 255, 0);
-  border-right: 5px solid rgba(255, 255, 255, 0);
+  border-left: 5px solid #919191;
+  border-right: 5px solid #919191;
   cursor: col-resize;
 }
 
@@ -71,5 +71,5 @@ code {
 
 .ant-switch-checked,
 .ant-switch-checked .ant-switch-inner {
-  background-color: darkcyan !important;
+  background-color: #8324fb !important;
 }

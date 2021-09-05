@@ -4,6 +4,7 @@ import Loader from "react-loader-spinner";
 import styled from "styled-components";
 import "antd/dist/antd.css";
 
+import { blackColour } from "../colourScheme";
 import LandingPage from "../components/landingPage/LandingPage";
 
 const { Header, Content } = Layout;
@@ -11,16 +12,19 @@ const { Header, Content } = Layout;
 const StyledLayout = styled(Layout)`
   min-height: 100vh;
   height: 100%;
+  background-color: ${blackColour};
+  color: white;
 `;
 const StyledHeader = styled(Header)`
   position: relative;
   padding: 0;
   z-index: 1;
   width: 100%;
-  border-bottom: 1px solid rgb(233, 233, 233);
+  border-bottom: 1px solid black;
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 25% 50% 25%;
+  background-color: rgba(0, 0, 0, 0.4);
 `;
 const StyledContent = styled(Content)`
   height: 100%;
@@ -38,13 +42,13 @@ const StyledLoader = styled(Loader)``;
 const StyledHeaderLabel = styled.div`
   display: flex;
   color: white;
-  border: 1px solid red;
   align-items: center;
   justify-content: center;
+  font-weight: bolder;
+  font-size: 40px;
 `;
 
 const StyledSwitchContainer = styled.div`
-  border: 1px solid green;
   display: grid;
   grid-template-rows: 100%;
   grid-template-columns: 47% 53%;

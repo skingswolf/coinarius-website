@@ -8,7 +8,7 @@ import Stamp from "../Stamp";
 import { DisplayWithPercent, NoData } from "../stamps-utils";
 
 const Body = styled.div`
-  background: #1c2024;
+  background: #202424;
   position: absolute;
   top: 20px;
   left: 2px;

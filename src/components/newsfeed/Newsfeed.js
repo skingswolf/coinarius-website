@@ -1,66 +1,108 @@
+/* eslint-disable no-unused-vars */
 import { css } from "@emotion/react";
-import MoonLoader from "react-spinners/MoonLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import React, { useEffect, useState } from "react";
 import ReactTooltip from "react-tooltip";
 import styled from "styled-components";
+import {
+  synthLightRedOne,
+  synthLightRedTwo,
+  synthLightGreenOne,
+  synthLightGreenTwo,
+  synthPurple
+} from "../../colourScheme";
 
 const loaderOverride = css`
   display: block;
-  margin: 0 auto;
-  border-color: red;
+`;
+
+const StyledSpinnerLoaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledNewsStory = styled.div`
-  border: red solid 1px;
   margin: 15px 15px 0 15px;
-  padding: 13px;
+  height: 120px;
   max-width: 1000px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: black solid 2px;
+`;
+
+const StyledNewsStoryContainer = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-rows: 24% 23% 53%;
+  grid-template-columns: 100%;
 `;
 
 const StyledNewsStoryTitle = styled.a`
-  // max-width: 900px;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
-  color: black;
+  color: white;
   text-decoration: none;
+  font-weight: bold;
   &:hover {
-    color: black;
+    color: white;
     text-decoration: none;
+    font-weight: bold;
   },
   line-height: 20px;
 `;
 
-const StyledNewsStoryContainer = styled.div`
-  display: grid;
-  grid-template-rows: 40% 60%;
-  grid-template-columns: 100%;
+const significanceLevel = 0.5;
+const StyledNewsStoryHeader = styled.div`
+  padding-left: 13px;
+  padding-right: 13px;
+  background: ${(props) => {
+    if (props.zScore >= significanceLevel) {
+      return `linear-gradient(242.74deg, ${synthLightGreenOne} 0.56%, ${synthLightGreenTwo} 100%)`;
+    }
+
+    if (props.zScore <= -1 * significanceLevel) {
+      return `linear-gradient(45deg, ${synthLightRedOne} 0%, ${synthLightRedTwo} 100%)`;
+    }
+
+    return "#1c2024";
+  }};
 `;
 
 const StyledNewsTitleContainer = styled.div`
+  padding-left: 13px;
+  padding-right: 13px;
   display: grid;
   grid-template-columns: 80% 20%;
   grid-template-rows: 100%;
   justify-self: stretch;
+  align-items: end;
 `;
 
 const StyledNewsStoryTopicContainer = styled.div`
+  // padding-left: 13px;
+  // padding-right: 13px;
+  padding-bottom: 13px;
   display: flex;
   justify-content: space-evenly;
   align-self: flex-end;
 `;
 
 const StyledNewsStoryTopic = styled.span`
-  border: 1px red solid;
+  background-color: black;
+  border: 6px black solid;
+  border-radius: 6px;
   font-size: 14px;
 `;
 
 const StyledNewsStoryDate = styled.div`
   display: flex;
   justify-content: flex-end;
-  align-self: flex-start;
+  align-self: end;
 `;
 
 const getNewsfeedItems = (newsStories) => {
@@ -74,6 +116,7 @@ const getNewsfeedItems = (newsStories) => {
     return (
       <StyledNewsStory key={newsStoryId} data-tip data-for={newsStoryId}>
         <StyledNewsStoryContainer>
+          <StyledNewsStoryHeader zScore={newsStory.z_score} />
           <StyledNewsTitleContainer>
             <StyledNewsStoryTitle href={newsStory.url} target="_blank" rel="noopener noreferrer">
               {newsStory.title}
@@ -121,7 +164,9 @@ const Newsfeed = () => {
   }, []);
 
   return news.isLoading ? (
-    <MoonLoader color="red" loading={news.isLoading} css={loaderOverride} size={150} />
+    <StyledSpinnerLoaderContainer>
+      <BounceLoader color={synthPurple} loading={news.isLoading} css={loaderOverride} size={90} />
+    </StyledSpinnerLoaderContainer>
   ) : (
     getNewsfeedItems(news.stories)
   );

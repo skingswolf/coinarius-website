@@ -6,6 +6,8 @@ import { line as d3Line } from "d3-shape";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
+import { synthPurple, synthDarkYellow } from "../../../colourScheme";
+
 const SVGComponent = styled.svg`
   position: absolute;
   top: 0;
@@ -46,13 +48,13 @@ const DoubleChart = ({ data, title, chartHeight, chartWidth, strokeColour, strok
       <g transform="translate(0,0)" fill="transparent">
         <path stroke={strokeColour} strokeWidth={strokeWidth} d={path} />
         <path
-          stroke="orange"
+          stroke={synthDarkYellow}
           strokeDasharray="3, 3"
           strokeWidth={strokeWidth}
           d={lowerBoundaryPath}
         />
         <path
-          stroke="orange"
+          stroke={synthDarkYellow}
           strokeDasharray="3, 3"
           strokeWidth={strokeWidth}
           d={upperBoundaryPath}
@@ -65,7 +67,7 @@ const DoubleChart = ({ data, title, chartHeight, chartWidth, strokeColour, strok
 DoubleChart.defaultProps = {
   chartHeight: 54,
   chartWidth: 102,
-  strokeColour: "blue",
+  strokeColour: synthPurple,
   strokeWidth: 1
 };
 

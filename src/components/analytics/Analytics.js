@@ -3,7 +3,7 @@
 import _ from "lodash";
 import { css } from "@emotion/react";
 import io from "socket.io-client";
-import MoonLoader from "react-spinners/MoonLoader";
+import BounceLoader from "react-spinners/BounceLoader";
 import PropTypes from "prop-types";
 import React, { useEffect, useState, useMemo } from "react";
 import SplitPane from "react-split-pane";
@@ -11,13 +11,20 @@ import styled from "styled-components";
 
 import Macroanalysis from "../macroanalysis/Macroanalysis";
 import ReturnsTreemap from "../returnsTreemap/ReturnsTreemap";
+import { synthPurple } from "../../colourScheme";
 
 const StyledHorizontalSplitPane = styled(SplitPane)``;
 
 const loaderOverride = css`
   display: block;
-  margin: 0 auto;
-  border-color: red;
+`;
+
+const StyledSpinnerLoaderContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const formatAnalytics = (apiAnalytics) => {
@@ -175,7 +182,14 @@ const Analytics = ({ sortKey, verticalPanePosition }) => {
       }}
     >
       {analytics.isLoading ? (
-        <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
+        <StyledSpinnerLoaderContainer>
+          <BounceLoader
+            color={synthPurple}
+            loading={analytics.isLoading}
+            css={loaderOverride}
+            size={90}
+          />
+        </StyledSpinnerLoaderContainer>
       ) : (
         <Macroanalysis
           analytics={analytics.data}
@@ -185,7 +199,14 @@ const Analytics = ({ sortKey, verticalPanePosition }) => {
         />
       )}
       {analytics.isLoading ? (
-        <MoonLoader color="red" loading={analytics.isLoading} css={loaderOverride} size={150} />
+        <StyledSpinnerLoaderContainer>
+          <BounceLoader
+            color={synthPurple}
+            loading={analytics.isLoading}
+            css={loaderOverride}
+            size={90}
+          />
+        </StyledSpinnerLoaderContainer>
       ) : (
         <ReturnsTreemap
           id="my-returns-treemap"

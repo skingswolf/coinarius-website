@@ -15,19 +15,19 @@ const Body = styled.div`
   display: grid;
   grid-template-columns: 200px auto;
   padding: 4px;
-  border-bottom: 1px green solid;
+  border-bottom: 1px black solid;
 `;
 
 const SecurityName = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px red solid;
-  font-size: 20px;
+  font-size: 25px;
+  font-weight: bolder;
+  color: black;
 `;
 
 const Stamps = styled.div`
-  border: 1px blue solid;
   display: inline-flex;
   justify-content: space-evenly;
 `;
