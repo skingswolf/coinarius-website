@@ -44,7 +44,7 @@ const Macroanalysis = ({ analytics, sortKey, scrollTo, scrollToCount }) => {
   }, [securities.join(",")]);
 
   const scrollToBottom = () => {
-    if (scrollTo === "unknown") {
+    if (scrollTo === "unknown" || scrollTo === null || scrollTo === undefined) {
       return;
     }
 
@@ -60,10 +60,14 @@ const Macroanalysis = ({ analytics, sortKey, scrollTo, scrollToCount }) => {
   return <Body>{getRows(securities, analytics, refs)}</Body>;
 };
 
+Macroanalysis.defaultProps = {
+  scrollTo: null
+};
+
 Macroanalysis.propTypes = {
   analytics: PropTypes.object.isRequired,
   sortKey: PropTypes.string.isRequired,
-  scrollTo: PropTypes.string.isRequired,
+  scrollTo: PropTypes.string,
   scrollToCount: PropTypes.number.isRequired
 };
 

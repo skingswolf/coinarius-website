@@ -9,7 +9,7 @@ import {
   synthLightGreenTwo
 } from "../../colourScheme";
 
-const significanceLevel = 0.5;
+const significanceLevel = 1.96;
 const Border = styled.div`
   position: relative;
   width: 111px;

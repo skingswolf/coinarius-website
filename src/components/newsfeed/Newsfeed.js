@@ -56,7 +56,7 @@ const StyledNewsStoryTitle = styled.a`
   line-height: 20px;
 `;
 
-const significanceLevel = 0.5;
+const significanceLevel = 1;
 const StyledNewsStoryHeader = styled.div`
   padding-left: 13px;
   padding-right: 13px;
