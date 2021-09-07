@@ -43,14 +43,6 @@ const options = {
   headerColor: `${lightestGreyColour}`,
   useWeightedAverageForAggregation: true,
   fontSize: 15,
-  // eslint-disable-next-line no-unused-vars
-  generateTooltip: (row, size, value) => {
-    if (row === 0) {
-      return "";
-    }
-
-    return `<div style="font-size: 12px; background:#fd9; padding:10px; border-style:solid"> Monthly Return: ${size}% </div>`;
-  },
   eventsConfig: {
     drilldown: [], // Disable drilldowns.
     highlight: ["click"]
@@ -107,22 +99,7 @@ const ReturnsTreemap = ({
     return [security, "Monthly Returns", Math.abs(return30day), return30day];
   });
 
-  return30daySeries.unshift(["Monthly Returns", null, 0, 0]);
-  return30daySeries.unshift(["Security", "Parent", "Abs, Return", "Return"]);
-
-  let previousSecurity = "";
-  const treemapNodeClickHandler = (e) => {
-    // eslint-disable-next-line no-unused-vars
-    const { row, column } = e;
-    const security = securities[row - 1];
-
-    if (security === previousSecurity) {
-      return;
-    }
-
-    treemapClickHandler(security);
-    previousSecurity = security;
-  };
+  console.log(return30daySeries);
 
   let minColour = "";
   let midColour = "";
@@ -145,6 +122,35 @@ const ReturnsTreemap = ({
   options.minColor = minColour;
   options.midColor = midColour;
   options.maxColor = maxColour;
+
+  // eslint-disable-next-line no-unused-vars
+  options.generateTooltip = (row, size, value) => {
+    if (row === 0) {
+      return "";
+    }
+    console.log(`row: ${row} size: ${size}`);
+
+    return `<div style="font-size: 12px; background:rgba(0, 0, 0, 0.7); color: white; padding:5px; border-color:rgba(0, 0, 0, 0.4)"> Monthly Return: ${
+      return30daySeries[row + 1][3]
+    }% </div>`;
+  };
+
+  let previousSecurity = "";
+  const treemapNodeClickHandler = (e) => {
+    // eslint-disable-next-line no-unused-vars
+    const { row, column } = e;
+    const security = securities[row - 1];
+
+    if (security === previousSecurity) {
+      return;
+    }
+
+    treemapClickHandler(security);
+    previousSecurity = security;
+  };
+
+  return30daySeries.unshift(["Monthly Returns", null, 0, 0]);
+  return30daySeries.unshift(["Security", "Parent", "Abs, Return", "Return"]);
 
   return (
     <ChartContainer id="chart-container">
