@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-alert */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -83,10 +84,15 @@ const ReturnsTreemap = ({
 
   let maxReturn = 0;
   let minReturn = 0;
+  let positiveReturnSum = 0;
+  let negativeReturnSum = 0;
 
-  const return30daySeries = securities.map((security) => {
+  let return30daySeries = securities.map((security) => {
     const { timeSeries } = analytics[security].return_30d;
     const return30day = parseFloat(timeSeries[timeSeries.length - 1][1].toFixed(2));
+
+    positiveReturnSum += return30day >= 0 ? return30day : 0;
+    negativeReturnSum += return30day < 0 ? Math.abs(return30day) : 0;
 
     if (maxReturn < return30day) {
       maxReturn = return30day;
@@ -97,6 +103,10 @@ const ReturnsTreemap = ({
     }
 
     return [security, "Monthly Returns", Math.abs(return30day), return30day];
+  });
+
+  const returnsCache = return30daySeries.map((arr) => {
+    return arr.slice();
   });
 
   console.log(return30daySeries);
@@ -114,6 +124,14 @@ const ReturnsTreemap = ({
     midColour = `${synthGreenInBetween}`;
     maxColour = `${synthLightGreenTwo}`;
   } else {
+    // eslint-disable-next-line no-unused-vars
+    return30daySeries = return30daySeries.map(([security, label, absReturn, rawReturn]) => {
+      const newReturn =
+        rawReturn > 0 ? (rawReturn * negativeReturnSum) / positiveReturnSum : rawReturn;
+
+      return [security, "Monthly Returns", absReturn, newReturn];
+    });
+
     minColour = `${synthLightRedOne}`;
     midColour = "#f7f7f7";
     maxColour = `${synthLightGreenTwo}`;
@@ -131,7 +149,7 @@ const ReturnsTreemap = ({
     console.log(`row: ${row} size: ${size}`);
 
     return `<div style="font-size: 12px; background:rgba(0, 0, 0, 0.7); color: white; padding:5px; border-color:rgba(0, 0, 0, 0.4)"> Monthly Return: ${
-      return30daySeries[row + 1][3]
+      returnsCache[row - 1][3]
     }% </div>`;
   };
 
