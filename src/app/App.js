@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { isMobile } from "react-device-detect";
 import { Layout, Switch } from "antd";
 import Loader from "react-loader-spinner";
 import styled from "styled-components";
@@ -73,6 +74,10 @@ const loaderContainer = (
 );
 
 const App = () => {
+  if (isMobile) {
+    return <div>Coinairus is not supported on mobile browsers! ¯\_(ツ)_/¯</div>;
+  }
+
   // eslint-disable-next-line no-unused-vars
   const [sortKey, setSortKey] = useState("totalZScore");
 

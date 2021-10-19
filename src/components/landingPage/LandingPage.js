@@ -1,7 +1,6 @@
 import _ from "lodash";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { isMobile } from "react-device-detect";
 import SplitPane from "react-split-pane";
 import styled from "styled-components";
 import "antd/dist/antd.css";
@@ -23,10 +22,6 @@ const LandingPage = ({ sortKey }) => {
     localStorage.setItem("splitVerticalPosition", newVerticalPanePosition);
     setVerticalPanePosition(newVerticalPanePosition);
   };
-
-  if (isMobile) {
-    return <div>Coinairus is not supported on mobile browsers! ¯\_(ツ)_/¯</div>;
-  }
 
   return (
     <StyledVerticalSplitPane
